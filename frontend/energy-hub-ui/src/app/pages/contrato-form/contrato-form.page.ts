@@ -6,13 +6,20 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 py-12">
-      <div class="max-w-md w-full bg-slate-900 border border-slate-800 rounded-xl p-6 text-center space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight text-slate-100">Formulário de Contrato</h2>
-        <p class="text-xs text-slate-400">Em breve: criar/editar contratos</p>
-        <a routerLink="/contratos" class="inline-flex items-center justify-center rounded-md bg-slate-800 hover:bg-slate-700 px-3 py-2 text-xs font-medium text-slate-200 transition-all border border-slate-700">
-          ← Voltar
-        </a>
+    <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 py-8 px-4 font-sans">
+      <div class="max-w-md w-full">
+        <div class="bg-gradient-to-br from-slate-800/50 to-slate-900 border border-slate-700/50 rounded-2xl shadow-2xl p-8 text-center hover:border-slate-600 transition-all">
+          <div class="mb-6">
+            <div class="text-5xl mb-4">⚙️</div>
+            <h2 class="font-display text-2xl font-bold text-slate-100">Formulário de Contrato</h2>
+            <p class="text-slate-400 font-light mt-3 text-sm">
+              Esta funcionalidade será em breve. Estamos trabalhando para disponibilizá-la!
+            </p>
+          </div>
+          <a routerLink="/contratos" class="inline-flex items-center justify-center w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold py-3 rounded-lg transition-all shadow-lg hover:shadow-emerald-500/30 transform hover:scale-105">
+            ← Voltar aos Contratos
+          </a>
+        </div>
       </div>
     </div>
   `
