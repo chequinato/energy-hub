@@ -23,8 +23,8 @@ import { RouterLink } from '@angular/router';
             <a routerLink="/login" class="bg-white text-purple-600 px-12 py-4 rounded-2xl font-bold text-xl hover:scale-105 transition-all shadow-2xl">
               🚀 Começar
             </a>
-            <a routerLink="/dashboard" class="border-2 border-white text-white px-12 py-4 rounded-2xl font-bold text-xl hover:bg-white hover:text-purple-600 transition-all">
-              Ver Dashboard
+            <a routerLink="/contratos" class="border-2 border-white text-white px-12 py-4 rounded-2xl font-bold text-xl hover:bg-white hover:text-purple-600 transition-all">
+              Ver Contratos
             </a>
           </div>
         </div>

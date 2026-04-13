@@ -8,4 +8,3 @@ public class ClienteDto
     public decimal ConsumoMedio { get; set; }
     public string Regiao { get; set; } = string.Empty;
 }
-

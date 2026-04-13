@@ -11,4 +11,3 @@ public interface IClienteService
     Task<bool> DeleteAsync(int id);
     Task<EconomiaSimulacaoDto> CalcularEconomiaAsync(int clienteId, decimal precoAtualMwh);
 }
-

@@ -15,10 +15,13 @@ public class ClienteRepository : IClienteRepository
         _context = context;
     }
 
-    public async Task<List<Cliente>> GetAllAsync()
-    {
-        return await _context.Clientes.ToListAsync();
-    }
+public async Task<List<Cliente>> GetAllAsync()
+{
+    return await _context.Clientes
+        .Include(c => c.Contratos)
+        .Include(c => c.Consumos)
+        .ToListAsync();
+}
 
     public async Task<Cliente?> GetByIdAsync(int id)
     {

@@ -10,13 +10,15 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     <nav class="bg-gradient-to-r from-orange-500 to-purple-600 shadow-lg">
       <div class="max-w-6xl mx-auto px-4 py-4">
         <div class="flex justify-between items-center">
-          <a routerLink="/" class="text-2xl font-bold text-white flex items-center gap-2">
+          <a routerLink="/home" class="text-2xl font-bold text-white flex items-center gap-2">
             ⚡ EnergyHub
           </a>
           <div class="flex gap-2">
+            <a routerLink="/home" routerLinkActive="active" class="px-4 py-2 text-white font-semibold rounded-xl hover:bg-white/20 transition-all">
+              🏠 Início
+            </a>
             <a routerLink="/dashboard" routerLinkActive="active" class="px-4 py-2 text-white font-semibold rounded-xl hover:bg-white/20 transition-all">
-              📊
- Dashboard
+              📊 Dashboard
             </a>
             <a routerLink="/clientes" routerLinkActive="active" class="px-4 py-2 text-white font-semibold rounded-xl hover:bg-white/20 transition-all">
               👥 Clientes
