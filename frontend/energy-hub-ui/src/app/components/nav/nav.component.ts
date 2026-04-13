@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
@@ -10,8 +9,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   template: `
     <nav class="bg-gradient-to-r from-orange-500 via-red-500 to-purple-600 text-white shadow-2xl p-4">
       <div class="max-w-6xl mx-auto flex justify-between items-center">
-        <a routerLink="/" class="text-2xl font-black flex items-center gap-2">
-          ⚡ <span>EnergyHub</span>
+        <a routerLink="/" class="text-2xl font-black flex items-center gap-2 hover:scale-105 transition-all">
+          ⚡ EnergyHub
         </a>
         <div class="hidden md:flex items-center gap-6 font-semibold">
           <a routerLink="/" routerLinkActive="active" class="px-4 py-2 rounded-xl hover:bg-white/20 transition-all">
@@ -31,18 +30,16 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
           </a>
         </div>
         <div class="md:hidden">
-          <button class="hamburger">☰</button>
+          <button class="text-xl">☰</button>
         </div>
       </div>
     </nav>
-
-    <style>
-      nav a.router-link-active {
-        background-color: rgba(255,255,255,0.3);
-        backdrop-filter: blur(10px);
-      }
-    </style>
-  `
+  `,
+  styles: [`
+    a.router-link-active {
+      background: rgba(255,255,255,0.2) !important;
+      backdrop-filter: blur(10px);
+    }
+  `]
 })
 export class NavComponent {}
-
