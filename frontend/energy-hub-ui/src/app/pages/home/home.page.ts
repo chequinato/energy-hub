@@ -8,113 +8,107 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterLink],
   template: `
-    <div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
-      <!-- Hero -->
-      <section class="bg-gradient-to-r from-orange-500 to-purple-600 text-white py-24">
-        <div class="max-w-6xl mx-auto px-4 text-center">
-          <h1 class="text-6xl md:text-7xl font-bold mb-6">
-            ⚡ EnergyHub
-          </h1>
-          <p class="text-2xl md:text-3xl mb-12 opacity-90 max-w-3xl mx-auto leading-relaxed">
-            Sistema de gestão de clientes no mercado livre de energia. 
-            Inspirado no que bancos fazem (cadastro, contratos, simulação de economia, dashboard).
+    <div class="min-h-screen bg-gradient-to-br from-slate-950 to-slate-900 text-slate-200">
+
+      <!-- HERO -->
+      <section class="max-w-5xl mx-auto px-6 pt-16 pb-12 text-center space-y-6">
+        <h1 class="text-5xl font-extrabold tracking-tight">
+          ⚡ EnergyHub
+        </h1>
+
+        <p class="text-slate-400 max-w-2xl mx-auto">
+          Gerencie clientes no mercado livre de energia com simplicidade, controle e visão estratégica.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-3 justify-center pt-4">
+          <a routerLink="/login"
+            class="bg-sky-500 hover:bg-sky-400 text-slate-900 px-6 py-3 rounded-lg font-semibold transition">
+            🚀 Começar agora
+          </a>
+
+          <a routerLink="/dashboard"
+            class="border border-slate-700 hover:border-slate-500 px-6 py-3 rounded-lg transition">
+            📊 Ver Dashboard
+          </a>
+        </div>
+      </section>
+
+      <!-- FEATURES -->
+      <section class="max-w-5xl mx-auto px-6 py-12">
+        <h2 class="text-2xl font-semibold mb-8 text-center">Recursos principais</h2>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-slate-900/60 border border-slate-800 p-5 rounded-xl hover:border-sky-500/40 transition">
+            <div class="text-3xl mb-3">👥</div>
+            <h3 class="font-semibold mb-1">Clientes</h3>
+            <p class="text-sm text-slate-400">Gerencie CNPJ, consumo e região</p>
+          </div>
+
+          <div class="bg-slate-900/60 border border-slate-800 p-5 rounded-xl hover:border-sky-500/40 transition">
+            <div class="text-3xl mb-3">📄</div>
+            <h3 class="font-semibold mb-1">Contratos</h3>
+            <p class="text-sm text-slate-400">Vincule fornecedores e tarifas</p>
+          </div>
+
+          <div class="bg-slate-900/60 border border-slate-800 p-5 rounded-xl hover:border-sky-500/40 transition">
+            <div class="text-3xl mb-3">💰</div>
+            <h3 class="font-semibold mb-1">Simulação</h3>
+            <p class="text-sm text-slate-400">Calcule economia real</p>
+          </div>
+
+          <div class="bg-slate-900/60 border border-slate-800 p-5 rounded-xl hover:border-sky-500/40 transition">
+            <div class="text-3xl mb-3">📊</div>
+            <h3 class="font-semibold mb-1">Dashboard</h3>
+            <p class="text-sm text-slate-400">Visualização completa dos dados</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- STACK -->
+      <section class="max-w-5xl mx-auto px-6 py-12">
+        <h2 class="text-2xl font-semibold mb-8 text-center">Tecnologias</h2>
+
+        <div class="grid sm:grid-cols-3 gap-6">
+          <div class="bg-slate-900 border border-slate-800 p-6 rounded-xl text-center">
+            <p class="text-blue-400 font-bold text-xl">.NET 8</p>
+            <p class="text-sm text-slate-400 mt-1">API robusta + EF Core</p>
+          </div>
+
+          <div class="bg-slate-900 border border-slate-800 p-6 rounded-xl text-center">
+            <p class="text-purple-400 font-bold text-xl">Angular</p>
+            <p class="text-sm text-slate-400 mt-1">Frontend moderno</p>
+          </div>
+
+          <div class="bg-slate-900 border border-slate-800 p-6 rounded-xl text-center">
+            <p class="text-green-400 font-bold text-xl">MySQL</p>
+            <p class="text-sm text-slate-400 mt-1">Persistência de dados</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA FINAL -->
+      <section class="bg-gradient-to-r from-sky-600 to-emerald-600 py-12 mt-12">
+        <div class="max-w-4xl mx-auto text-center space-y-4 px-6">
+          <h2 class="text-2xl font-semibold text-white">Pronto pra começar?</h2>
+          <p class="text-white/80 text-sm">
+            Crie sua conta e comece a gerenciar seus clientes agora mesmo.
           </p>
-          <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a routerLink="/login" class="bg-white text-purple-600 px-12 py-4 rounded-2xl font-bold text-xl hover:scale-105 transition-all shadow-2xl">
-              🚀 Começar
+
+          <div class="flex flex-col sm:flex-row gap-3 justify-center pt-4">
+            <a routerLink="/register"
+              class="bg-white text-slate-900 px-6 py-3 rounded-lg font-semibold hover:bg-slate-200 transition">
+              📝 Criar Conta
             </a>
-            <a routerLink="/contratos" class="border-2 border-white text-white px-12 py-4 rounded-2xl font-bold text-xl hover:bg-white hover:text-purple-600 transition-all">
-              Ver Contratos
+
+            <a routerLink="/login"
+              class="border border-white text-white px-6 py-3 rounded-lg hover:bg-white/20 transition">
+              🔐 Login
             </a>
           </div>
         </div>
       </section>
 
-      <!-- Features Cards -->
-      <section class="max-w-6xl mx-auto px-4 py-24">
-        <h2 class="text-4xl font-bold text-center mb-20 text-gray-800">Como funciona?</h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <!-- Card 1 -->
-          <div class="group bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-4 border border-gray-100">
-            <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all mx-auto">
-              👥
-            </div>
-            <h3 class="text-2xl font-bold mb-4 text-gray-800 text-center">Clientes</h3>
-            <p class="text-gray-600 text-center leading-relaxed">Cadastro completo com CNPJ, consumo médio e região. CRUD completo.</p>
-          </div>
-
-          <!-- Card 2 -->
-          <div class="group bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-4 border border-gray-100">
-            <div class="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all mx-auto">
-              📄
-            </div>
-            <h3 class="text-2xl font-bold mb-4 text-gray-800 text-center">Contratos</h3>
-            <p class="text-gray-600 text-center leading-relaxed">Vincule contratos aos clientes com fornecedor, preço/MWh e período.</p>
-          </div>
-
-          <!-- Card 3 -->
-          <div class="group bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-4 border border-gray-100">
-            <div class="w-20 h-20 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all mx-auto">
-              💰
-            </div>
-            <h3 class="text-2xl font-bold mb-4 text-gray-800 text-center">Simulação</h3>
-            <p class="text-gray-600 text-center leading-relaxed">Calcula economia real: (preço atual - contrato) × consumo = % economia mensal.</p>
-          </div>
-
-          <!-- Card 4 -->
-          <div class="group bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-4 border border-gray-100">
-            <div class="w-20 h-20 bg-gradient-to-r from-purple-500 to-violet-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all mx-auto">
-              📊
-            </div>
-            <h3 class="text-2xl font-bold mb-4 text-gray-800 text-center">Dashboard</h3>
-            <p class="text-gray-600 text-center leading-relaxed">Resumo visual de consumo, contratos ativos e economia projetada.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Tech Stack -->
-      <section class="max-w-6xl mx-auto px-4 py-24 bg-white rounded-3xl shadow-2xl mx-8 -mt-12 relative z-10">
-        <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">🛠️ Stack Tecnológica</h2>
-        <div class="grid md:grid-cols-3 gap-8 text-center">
-          <div>
-            <div class="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl">
-              .NET
-            </div>
-            <h3 class="text-2xl font-bold mb-2">Backend</h3>
-            <p class="text-gray-600">.NET 8 + EF Core + MySQL<br>Arquitetura em camadas</p>
-          </div>
-          <div>
-            <div class="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl">
-              A
-            </div>
-            <h3 class="text-2xl font-bold mb-2">Frontend</h3>
-            <p class="text-gray-600">Angular 17+ standalone<br>TailwindCSS + modern UI</p>
-          </div>
-          <div>
-            <div class="w-24 h-24 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl">
-              🗄️
-            </div>
-            <h3 class="text-2xl font-bold mb-2">Banco</h3>
-            <p class="text-gray-600">MySQL com entidades Cliente/Contrato/Consumo<br>EF Core migrations</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- CTA Final -->
-      <section class="text-center py-24">
-        <h2 class="text-4xl font-bold mb-6 text-gray-800">Pronto para começar?</h2>
-        <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">Crie sua conta e gerencie seus clientes no mercado livre de energia em minutos.</p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a routerLink="/register" class="bg-gradient-to-r from-orange-500 to-purple-600 text-white px-12 py-4 rounded-2xl font-bold text-xl hover:scale-105 shadow-2xl transition-all">
-            📝 Criar Conta Gratuita
-          </a>
-          <a routerLink="/dashboard" class="border-4 border-orange-500 text-orange-600 px-12 py-4 rounded-2xl font-bold text-xl hover:bg-orange-500 hover:text-white transition-all shadow-xl">
-            Ver Demo →
-          </a>
-        </div>
-      </section>
     </div>
   `
 })
-export class HomePage { }
-
+export class HomePage {}

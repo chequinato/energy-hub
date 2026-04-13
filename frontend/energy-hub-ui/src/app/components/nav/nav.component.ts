@@ -7,7 +7,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive],
   template: `
-    <nav class="bg-gradient-to-r from-orange-500 via-red-500 to-purple-600 text-white shadow-2xl p-4">
+    <nav class="bg-slate-900/80 backdrop-blur-md border-b border-white/10 shadow-lg">
       <div class="max-w-6xl mx-auto flex justify-between items-center">
         <a routerLink="/" class="text-2xl font-black flex items-center gap-2 hover:scale-105 transition-all">
           ⚡ EnergyHub

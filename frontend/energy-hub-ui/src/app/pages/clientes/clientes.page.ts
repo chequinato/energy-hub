@@ -11,75 +11,65 @@ import { Cliente, CreateCliente, UpdateCliente } from '../../models/cliente.mode
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   template: `
-    <div class="p-8 max-w-7xl mx-auto">
-      <div class="flex justify-between items-center mb-12">
-        <h1 class="text-4xl font-bold bg-gradient-to-r from-orange-500 to-purple-600 bg-clip-text text-transparent">
-          👥 Clientes
-        </h1>
-        <button routerLink="/clientes/novo" class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-3 rounded-xl font-bold text-lg hover:scale-105 shadow-xl transition-all">
-          + Novo Cliente
-        </button>
-      </div>
-
-      @if (carregando) {
-        <div class="flex justify-center py-16">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+    <div class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 py-6 px-4">
+      <div class="max-w-6xl mx-auto space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-semibold tracking-tight">Clientes</h2>
+            <p class="text-sm text-slate-400">Gerencie seus clientes no mercado livre</p>
+          </div>
+          <button routerLink="/clientes/novo" class="inline-flex items-center rounded-md bg-emerald-600 hover:bg-emerald-500 px-3 py-1.5 text-xs font-medium text-white">
+            + Novo
+          </button>
         </div>
-      } @else {
-        @if (clientes().length === 0) {
-          <div class="text-center py-20">
-            <div class="w-32 h-32 bg-gray-100 rounded-3xl flex items-center justify-center mx-auto mb-8">
-              👥
-            </div>
-            <h3 class="text-2xl font-bold text-gray-600 mb-4">Nenhum cliente cadastrado</h3>
-            <p class="text-gray-500 mb-8">Comece adicionando seu primeiro cliente.</p>
-            <button routerLink="/clientes/novo" class="bg-gradient-to-r from-orange-500 to-purple-600 text-white px-8 py-3 rounded-xl font-bold text-lg hover:scale-105 shadow-xl transition-all">
-              Adicionar Primeiro Cliente
-            </button>
+
+        @if (carregando) {
+          <div class="flex justify-center py-8">
+            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-emerald-500"></div>
           </div>
         } @else {
-          <!-- Tabela -->
-          <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
-            <div class="overflow-x-auto">
-              <table class="w-full">
-                <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
-                  <tr>
-                    <th class="px-8 py-6 text-left text-lg font-bold text-gray-800">Nome</th>
-                    <th class="px-8 py-6 text-left text-lg font-bold text-gray-800">CNPJ</th>
-                    <th class="px-8 py-6 text-left text-lg font-bold text-gray-800">Consumo Médio</th>
-                    <th class="px-8 py-6 text-left text-lg font-bold text-gray-800">Região</th>
-                    <th class="px-8 py-6 text-right text-lg font-bold text-gray-800">Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @for (cliente of clientes(); track cliente.id) {
-                    <tr class="border-t border-gray-100 hover:bg-gray-50 transition-all">
-                      <td class="px-8 py-6 font-semibold text-gray-900">{{ cliente.nome }}</td>
-                      <td class="px-8 py-6 text-gray-700">{{ cliente.cnpj }}</td>
-                      <td class="px-8 py-6 font-bold text-orange-600">{{ cliente.consumoMedio | number:'1.0-0' }} MWh</td>
-                      <td class="px-8 py-6">
-                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                          {{ cliente.regiao }}
-                        </span>
-                      </td>
-                      <td class="px-8 py-6 text-right">
-                        <div class="flex gap-2 justify-end">
-                          <button (click)="editar(cliente.id)" class="text-blue-600 hover:text-blue-500 font-semibold px-4 py-2 rounded-xl hover:bg-blue-50 transition-all">
-                            Editar
-                          </button>
-                          <button (click)="deletar(cliente.id)" class="text-red-600 hover:text-red-500 font-semibold px-4 py-2 rounded-xl hover:bg-red-50 transition-all">
-                            Deletar
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  }
-                </tbody>
-              </table>
+          @if (clientes().length === 0) {
+            <div class="text-center py-12 bg-slate-900 border border-slate-800 rounded-xl">
+              <p class="text-sm text-slate-400">Nenhum cliente cadastrado</p>
+              <button routerLink="/clientes/novo" class="mt-3 inline-flex items-center rounded-md bg-emerald-600 hover:bg-emerald-500 px-3 py-1.5 text-xs font-medium text-white">
+                Adicionar Primeiro
+              </button>
             </div>
-          </div>
+          } @else {
+            <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+              <div class="overflow-x-auto">
+                <table class="w-full text-xs">
+                  <thead class="bg-slate-950 border-b border-slate-800">
+                    <tr>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-200">Nome</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-200">CNPJ</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-200">Consumo</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-200">Região</th>
+                      <th class="px-4 py-3 text-right font-semibold text-slate-200">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800">
+                    @for (cliente of clientes(); track cliente.id) {
+                      <tr class="hover:bg-slate-800/50 transition-all">
+                        <td class="px-4 py-3 text-slate-100 font-medium">{{ cliente.nome }}</td>
+                        <td class="px-4 py-3 text-slate-400">{{ cliente.cnpj }}</td>
+                        <td class="px-4 py-3 font-semibold text-amber-400">{{ cliente.consumoMedio | number:'1.0-0' }} MWh</td>
+                        <td class="px-4 py-3 text-slate-400">
+                          <span class="px-2 py-1 text-[11px] bg-blue-900/40 text-blue-300 rounded">{{ cliente.regiao }}</span>
+                        </td>
+                        <td class="px-4 py-3 text-right space-x-1">
+                          <button (click)="editar(cliente.id)" class="text-sky-400 hover:text-sky-300 text-[11px] font-medium">Editar</button>
+                          <button (click)="deletar(cliente.id)" class="text-red-400 hover:text-red-300 text-[11px] font-medium">Deletar</button>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          }
         }
-      }
+      </div>
     </div>
   `
 })

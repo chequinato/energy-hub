@@ -1,18 +1,20 @@
 
-<nav class="bg-gradient-to-r from-orange-500 to-purple-600 shadow-2xl p-4 px-8">
-  <div class="max-w-6xl mx-auto flex justify-between items-center text-white">
-    <div class="text-2xl font-bold">⚡ EnergyHub</div>
-    <div class="flex gap-4">
-      <a routerLink="/" class="px-6 py-3 rounded-xl hover:bg-white/20 transition-all">Home</a>
-      <a routerLink="/dashboard" class="px-6 py-3 rounded-xl hover:bg-white/20 transition-all">Dashboard</a>
-      <a routerLink="/clientes" class="px-6 py-3 rounded-xl hover:bg-white/20 transition-all">Clientes</a>
-      <a routerLink="/contratos" class="px-6 py-3 rounded-xl hover:bg-white/20 transition-all">Contratos</a>
-      <a routerLink="/login" class="px-6 py-3 rounded-xl hover:bg-white/20 transition-all">Login</a>
+<nav class="bg-gradient-to-r from-green-700 to-emerald-600 shadow-xl sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
+    <a routerLink="/home" class="text-lg font-extrabold tracking-tight text-white flex items-center gap-2 hover:text-yellow-100 transition-all">
+      <span>⚡</span> EnergyHub
+    </a>
+    <div class="flex gap-2">
+      <a routerLink="/home" class="px-4 py-2 text-sm font-semibold text-white rounded-md hover:bg-white/25 transition-all">🏠 Início</a>
+      <a routerLink="/dashboard" class="px-4 py-2 text-sm font-semibold text-white rounded-md hover:bg-white/25 transition-all">📊 Dashboard</a>
+      <a routerLink="/clientes" class="px-4 py-2 text-sm font-semibold text-white rounded-md hover:bg-white/25 transition-all">👥 Clientes</a>
+      <a routerLink="/contratos" class="px-4 py-2 text-sm font-semibold text-white rounded-md hover:bg-white/25 transition-all">📄 Contratos</a>
+      <a routerLink="/login" class="px-4 py-2 text-sm font-semibold text-white rounded-md hover:bg-white/25 transition-all">🔑 Login</a>
     </div>
   </div>
 </nav>
 
-<main class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+<main class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 font-sans text-slate-100">
   <router-outlet />
 </main>
 

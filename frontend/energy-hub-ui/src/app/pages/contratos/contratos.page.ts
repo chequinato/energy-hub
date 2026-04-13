@@ -9,61 +9,60 @@ import { Contrato } from '../../models/contrato.model';
   standalone: true,
   imports: [CommonModule, RouterLink],
   template: `
-    <div class="p-8 max-w-7xl mx-auto">
-      <div class="flex justify-between items-center mb-12">
-        <h1 class="text-4xl font-bold bg-gradient-to-r from-orange-500 to-purple-600 bg-clip-text text-transparent">
-          📄 Contratos
-        </h1>
-        <button routerLink="/contratos/novo" class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-3 rounded-xl font-bold text-lg hover:scale-105 shadow-xl transition-all">
-          + Novo Contrato
-        </button>
-      </div>
-
-      <ng-container *ngIf="carregando; else lista">
-        <div class="flex justify-center py-16">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+    <div class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 py-6 px-4">
+      <div class="max-w-6xl mx-auto space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-semibold tracking-tight">Contratos</h2>
+            <p class="text-sm text-slate-400">Gerenciamento de contratos de energia</p>
+          </div>
+          <button routerLink="/contratos/novo" class="inline-flex items-center rounded-md bg-emerald-600 hover:bg-emerald-500 px-3 py-1.5 text-xs font-medium text-white">
+            + Novo
+          </button>
         </div>
-      </ng-container>
-      <ng-template #lista>
-        <ng-container *ngIf="contratos().length === 0; else tabela">
-          <div class="text-center py-20">
-            <div class="w-32 h-32 bg-gray-100 rounded-3xl flex items-center justify-center mx-auto mb-8">
-              📄
-            </div>
-            <h3 class="text-2xl font-bold text-gray-600 mb-4">Nenhum contrato cadastrado</h3>
-            <p class="text-gray-500 mb-8">Comece adicionando seu primeiro contrato.</p>
-            <button routerLink="/contratos/novo" class="bg-gradient-to-r from-orange-500 to-purple-600 text-white px-8 py-3 rounded-xl font-bold text-lg hover:scale-105 shadow-xl transition-all">
-              Adicionar Primeiro Contrato
-            </button>
+
+        <ng-container *ngIf="carregando; else lista">
+          <div class="flex justify-center py-8">
+            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-emerald-500"></div>
           </div>
         </ng-container>
-        <ng-template #tabela>
-          <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
-            <div class="overflow-x-auto">
-              <table class="w-full">
-                <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
-                  <tr>
-                    <th class="px-8 py-6 text-left text-lg font-bold text-gray-800">Fornecedor</th>
-                    <th class="px-8 py-6 text-left text-lg font-bold text-gray-800">ClienteId</th>
-                    <th class="px-8 py-6 text-left text-lg font-bold text-gray-800">Preço (R$/MWh)</th>
-                    <th class="px-8 py-6 text-left text-lg font-bold text-gray-800">Início</th>
-                    <th class="px-8 py-6 text-left text-lg font-bold text-gray-800">Fim</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let contrato of contratos()">
-                    <td class="px-8 py-6 font-semibold text-gray-900">{{ contrato.fornecedor }}</td>
-                    <td class="px-8 py-6 text-gray-700">{{ contrato.clienteId }}</td>
-                    <td class="px-8 py-6 font-bold text-orange-600">{{ contrato.precoMwh | number:'1.2-2' }}</td>
-                    <td class="px-8 py-6">{{ contrato.dataInicio | date:'yyyy-MM-dd' }}</td>
-                    <td class="px-8 py-6">{{ contrato.dataFim | date:'yyyy-MM-dd' }}</td>
-                  </tr>
-                </tbody>
-              </table>
+        <ng-template #lista>
+          <ng-container *ngIf="contratos().length === 0; else tabela">
+            <div class="text-center py-12 bg-slate-900 border border-slate-800 rounded-xl">
+              <p class="text-sm text-slate-400">Nenhum contrato cadastrado</p>
+              <button routerLink="/contratos/novo" class="mt-3 inline-flex items-center rounded-md bg-emerald-600 hover:bg-emerald-500 px-3 py-1.5 text-xs font-medium text-white">
+                Adicionar Primeiro
+              </button>
             </div>
-          </div>
+          </ng-container>
+          <ng-template #tabela>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+              <div class="overflow-x-auto">
+                <table class="w-full text-xs">
+                  <thead class="bg-slate-950 border-b border-slate-800">
+                    <tr>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-200">Fornecedor</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-200">Cliente ID</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-200">Preço/MWh</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-200">Início</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-200">Fim</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800">
+                    <tr *ngFor="let contrato of contratos()" class="hover:bg-slate-800/50 transition-all">
+                      <td class="px-4 py-3 text-slate-100 font-medium">{{ contrato.fornecedor }}</td>
+                      <td class="px-4 py-3 text-slate-400">{{ contrato.clienteId }}</td>
+                      <td class="px-4 py-3 font-semibold text-amber-400">R$ {{ contrato.precoMwh | number:'1.2-2' }}</td>
+                      <td class="px-4 py-3 text-slate-400">{{ contrato.dataInicio | date:'dd/MM/yyyy' }}</td>
+                      <td class="px-4 py-3 text-slate-400">{{ contrato.dataFim | date:'dd/MM/yyyy' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </ng-template>
         </ng-template>
-      </ng-template>
+      </div>
     </div>
   `
 })
