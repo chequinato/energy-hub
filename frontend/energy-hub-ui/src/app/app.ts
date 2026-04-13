@@ -1,12 +1,18 @@
+
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { NavComponent } from './components/nav/nav.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
+  imports: [RouterOutlet, NavComponent],
+  template: `
+    <app-nav />
+    <router-outlet />
+  `,
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('energy-hub-ui');
+  title = signal('EnergyHub');
 }
+
