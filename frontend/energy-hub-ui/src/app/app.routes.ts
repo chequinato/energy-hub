@@ -7,6 +7,7 @@ export const routes: Routes = [
   { path: 'clientes', loadComponent: () => import('./pages/clientes/clientes.page').then(m => m.ClientesPage) },
   { path: 'clientes/novo', loadComponent: () => import('./pages/cliente-form/cliente-form.page').then(m => m.ClienteFormPage) },
   { path: 'clientes/:id/editar', loadComponent: () => import('./pages/cliente-form/cliente-form.page').then(m => m.ClienteFormPage) },
+  { path: 'clientes/editar/:id', loadComponent: () => import('./pages/cliente-form/cliente-form.page').then(m => m.ClienteFormPage) },
   { path: 'contratos', loadComponent: () => import('./pages/contratos/contratos.page').then(m => m.ContratosPage) },
   { path: 'contratos/novo', loadComponent: () => import('./pages/contrato-form/contrato-form.page').then(m => m.ContratoFormPage) },
   { path: 'login', loadComponent: () => import('./pages/login/login.page').then(m => m.LoginPage) },

@@ -6,6 +6,7 @@ import { RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { Cliente, CreateCliente, UpdateCliente } from '../../models/cliente.model';
 import { ClienteDetail } from '../../models/cliente-detail.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-clientes',
@@ -57,72 +58,79 @@ import { ClienteDetail } from '../../models/cliente-detail.model';
 
 <tbody class="divide-y divide-slate-700">
   @for (cliente of clientes(); track cliente.id) {
-    <tr class="hover:bg-slate-700/40 transition-all hover:border-l-4 hover:border-l-emerald-500">
+    <tr class="hover:bg-slate-800/40 transition-all duration-200">
 
       <!-- ID -->
-      <td class="px-6 py-4 text-slate-500 font-mono text-xs">
+      <td class="px-6 py-5 text-slate-500 font-mono text-xs">
         #{{ cliente.id }}
       </td>
 
       <!-- Nome -->
-      <td class="px-6 py-4 text-slate-100 font-semibold">
+      <td class="px-6 py-5 text-slate-100 font-semibold">
         {{ cliente.nome }}
       </td>
 
       <!-- CNPJ -->
-      <td class="px-6 py-4 text-slate-400 font-mono text-xs">
+      <td class="px-6 py-5 text-slate-400 font-mono text-xs">
         {{ cliente.cnpj }}
       </td>
 
       <!-- Consumo -->
-      <td class="px-6 py-4">
-        <span class="font-bold text-amber-400">
+      <td class="px-6 py-5">
+        <span class="text-base font-semibold text-amber-400">
           {{ cliente.consumoMedio | number:'1.0-0' }} MWh
         </span>
       </td>
 
       <!-- Região -->
-      <td class="px-6 py-4">
-        <span class="px-3 py-1 text-xs bg-blue-900/30 text-blue-300 rounded-full">
+      <td class="px-6 py-5">
+        <span class="px-3 py-1 text-xs bg-blue-500/10 text-blue-300 rounded-full">
           {{ cliente.regiao }}
         </span>
       </td>
 
-      <!-- Status do contrato -->
-      <td class="px-6 py-4">
+      <!-- Status -->
+      <td class="px-6 py-5">
         <span
-          class="px-3 py-1 text-xs font-semibold rounded-full"
+          class="px-3 py-1 text-xs font-medium rounded-full"
           [ngClass]="cliente.statusContrato?.includes('Ativo')
-            ? 'bg-emerald-500/20 text-emerald-400'
-            : 'bg-red-500/20 text-red-400'">
+            ? 'bg-emerald-500/10 text-emerald-400'
+            : 'bg-red-500/10 text-red-400'">
           {{ cliente.statusContrato }}
         </span>
       </td>
 
       <!-- Economia -->
-      <td class="px-6 py-4">
-        <span class="font-bold text-emerald-400">
+      <td class="px-6 py-5">
+        <span
+          class="text-lg font-bold"
+          [ngClass]="cliente.economiaEstimada >= 0
+            ? 'text-emerald-400'
+            : 'text-red-400'">
           R$ {{ cliente.economiaEstimada | number:'1.0-0' }}
         </span>
       </td>
 
       <!-- Ações -->
-      <td class="px-6 py-4 text-right space-x-2">
-        <button (click)="editar(cliente.id)"
-          class="px-3 py-1 text-xs bg-sky-500/20 text-sky-400 hover:bg-sky-500/30 rounded-lg">
-          ✏️
-        </button>
+      <td class="px-6 py-5 text-right">
+        <div class="flex justify-end gap-3">
 
-        <button (click)="deletar(cliente.id)"
-          class="px-3 py-1 text-xs bg-red-500/20 text-red-400 hover:bg-red-500/30 rounded-lg">
-          🗑️
-        </button>
+          <button (click)="editar(cliente.id)"
+            class="w-9 h-9 flex items-center justify-center bg-sky-500/10 text-sky-400 hover:bg-sky-500/20 rounded-lg transition">
+            ✏️
+          </button>
 
-        <!-- BOTÃO NOVO 🔥 -->
-        <a [routerLink]="['/contratos/novo']"
-          class="px-3 py-1 text-xs bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg">
-          ➕ Contrato
-        </a>
+          <button (click)="deletar(cliente.id)"
+            class="w-9 h-9 flex items-center justify-center bg-red-500/10 text-red-400 hover:bg-red-500/20 rounded-lg transition">
+            🗑️
+          </button>
+
+          <a [routerLink]="['/contratos/novo']"
+            class="w-9 h-9 flex items-center justify-center bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 rounded-lg transition">
+            ➕
+          </a>
+
+        </div>
       </td>
 
     </tr>
@@ -139,6 +147,7 @@ import { ClienteDetail } from '../../models/cliente-detail.model';
 })
 export class ClientesPage implements OnInit {
   private apiService = inject(ApiService);
+  private router = inject(Router);
 
   clientes = signal<ClienteDetail[]>([]);
   carregando = signal(true);
@@ -166,7 +175,7 @@ export class ClientesPage implements OnInit {
   }
 
   editar(id: number) {
-    // Navigate to edit form
+    this.router.navigate(['/clientes/editar', id]);
   }
 
   deletar(id: number) {
