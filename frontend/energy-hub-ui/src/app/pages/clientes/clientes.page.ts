@@ -1,5 +1,5 @@
 
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -24,7 +24,7 @@ import { Cliente, CreateCliente, UpdateCliente } from '../../models/cliente.mode
           </button>
         </div>
 
-        @if (carregando) {
+        @if (carregando()) {
           <div class="flex justify-center py-16">
             <div class="animate-spin rounded-full h-12 w-12 border-4 border-emerald-500/30 border-t-emerald-500"></div>
           </div>
@@ -80,25 +80,30 @@ import { Cliente, CreateCliente, UpdateCliente } from '../../models/cliente.mode
     </div>
   `
 })
-export class ClientesPage {
+export class ClientesPage implements OnInit {
   private apiService = inject(ApiService);
   
   clientes = signal<Cliente[]>([]);
-  carregando = true;
+  carregando = signal(true);
 
-  constructor() {
+
+  ngOnInit() {
     this.loadClientes();
   }
 
   loadClientes() {
+
+    this.carregando.set(true);
+    this.clientes.set([]);
+
     this.apiService.getClientes().subscribe({
       next: (data: Cliente[]) => {
         this.clientes.set(data);
-        this.carregando = false;
+        this.carregando.set(false);
       },
       error: (err: any) => {
         console.error('Erro:', err);
-        this.carregando = false;
+        this.carregando.set(false);
       }
     });
   }

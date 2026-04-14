@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api.service';
@@ -22,7 +22,7 @@ import { Contrato } from '../../models/contrato.model';
           </button>
         </div>
 
-        <ng-container *ngIf="carregando; else lista">
+        <ng-container *ngIf="carregando(); else lista">
           <div class="flex justify-center py-16">
             <div class="animate-spin rounded-full h-12 w-12 border-4 border-emerald-500/30 border-t-emerald-500"></div>
           </div>
@@ -75,23 +75,27 @@ import { Contrato } from '../../models/contrato.model';
     </div>
   `
 })
-export class ContratosPage {
+export class ContratosPage implements OnInit {
   private apiService = inject(ApiService);
   contratos = signal<Contrato[]>([]);
-  carregando = true;
+  carregando = signal(true);
 
-  constructor() {
+  ngOnInit() {
     this.loadContratos();
   }
 
   loadContratos() {
+
+    this.contratos.set([]);
+    this.carregando.set(true);
+
     this.apiService.getContratos().subscribe({
       next: (data: Contrato[]) => {
         this.contratos.set(data);
-        this.carregando = false;
+        this.carregando.set(false);
       },
       error: () => {
-        this.carregando = false;
+        this.carregando.set(false);
       }
     });
   }
