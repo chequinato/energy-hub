@@ -11,10 +11,10 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
       <div class="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center font-sans">
         <!-- Logo -->
         <a routerLink="/" class="flex items-center gap-2 hover:opacity-90 transition-opacity group">
-          <span class="text-3xl group-hover:scale-110 transition-transform">⚡</span>
-          <span class="text-xl font-display font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-400 to-emerald-400 hover:from-sky-300 hover:to-emerald-300 transition-all">
+          <span class="text-3xl text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-400 to-emerald-400">⚡</span>
+        <span class="text-2xl md:text-3xl font-display font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-400 to-emerald-400 group-hover:scale-105 transition-all">
             EnergyHub
-          </span>
+        </span>
         </a>
 
         <!-- Desktop Navigation -->

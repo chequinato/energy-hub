@@ -13,7 +13,7 @@ import { RouterLink } from '@angular/router';
       <!-- HERO -->
       <section class="max-w-6xl mx-auto px-6 pt-24 pb-20 text-center space-y-8">
         <div class="space-y-4">
-          <h1 class="font-display text-display-lg font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-400 to-emerald-400">
+          <h1 class="font-display text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-400 to-emerald-400">
             ⚡ EnergyHub
           </h1>
           <p class="text-xl text-slate-300 font-light max-w-3xl mx-auto leading-relaxed">
