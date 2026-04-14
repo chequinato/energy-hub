@@ -55,7 +55,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   `,
   styles: [`
     :host a.router-link-active {
-      @apply bg-slate-800/70 text-white !important;
+      background-color: rgba(30 41 59 / 0.7);
+      color: white;
     }
   `]
 })
