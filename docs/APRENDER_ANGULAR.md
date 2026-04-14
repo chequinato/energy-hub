@@ -1,4 +1,164 @@
-# 📱 Aprender Angular - Essenciais para o Projeto
+# 📱 Aprender Angular - Essenciais para o Projeto EnergyHub
+
+## 🎯 Pré-requisitos: HTML, CSS e TypeScript Sólido
+
+Antes de mergulhar no Angular, certifique-se de dominar:
+
+- **HTML**: Estrutura semântica, formulários, tabelas
+- **CSS**: Flexbox, Grid, seletores, responsividade (usado no dashboard com Tailwind CSS)
+- **TypeScript**: Tipos, interfaces, classes, generics (usado em models como `Cliente`, `Dashboard`)
+
+No EnergyHub, usamos TypeScript para definir interfaces como:
+
+```typescript
+export interface Cliente {
+  id: number;
+  nome: string;
+  consumoMedio: number;
+  regiao: string;
+}
+```
+
+## 🛠️ CLI e Estrutura: Criar Projeto (ng new) e Entender Arquivos
+
+### Angular CLI
+```bash
+# Criar projeto
+ng new energy-hub-ui --standalone --routing
+
+# Gerar componentes
+ng generate component pages/dashboard
+ng generate service services/api
+```
+
+### Estrutura de Arquivos (EnergyHub)
+```
+src/app/
+├── app.config.ts      # Configuração global (HttpClient, rotas)
+├── app.routes.ts      # Definição de rotas
+├── pages/            # Páginas (dashboard, clientes)
+├── services/         # Comunicação com API
+└── models/           # Interfaces TypeScript
+```
+
+## 🧩 Componentes: Criar, Passar Dados (@Input, @Output)
+
+### Componente Standalone (usado no projeto)
+```typescript
+@Component({
+  selector: 'app-dashboard',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  template: `...`
+})
+export class DashboardPage {
+  // Injeção de dependências
+  private apiService = inject(ApiService);
+  
+  // Signals para reatividade (Angular 17+)
+  clientes = signal<ClienteDetail[]>([]);
+  dashboard = signal<Dashboard | null>(null);
+}
+```
+
+### Passagem de Dados
+```typescript
+// @Input: pai passa dados para filho
+@Component({...})
+export class ClienteCardComponent {
+  @Input() cliente!: Cliente;
+}
+
+// @Output: filho emite eventos para pai
+@Output() clienteSelecionado = new EventEmitter<Cliente>();
+
+selecionar() {
+  this.clienteSelecionado.emit(this.cliente);
+}
+```
+
+**No EnergyHub**: O dashboard usa `@for` para listar clientes, passando dados via template.
+
+## 🌐 Serviços e HTTP: Consumir APIs com HttpClient
+
+### Serviço para API
+```typescript
+@Injectable({ providedIn: 'root' })
+export class ApiService {
+  private http = inject(HttpClient);
+  private baseUrl = 'http://localhost:5243/api';
+
+  getClientes(): Observable<Cliente[]> {
+    return this.http.get<Cliente[]>(`${this.baseUrl}/clientes`);
+  }
+
+  getDashboard(): Observable<Dashboard> {
+    return this.http.get<Dashboard>(`${this.baseUrl}/dashboard`);
+  }
+}
+```
+
+**No EnergyHub**: `ApiService` consome endpoints REST, usado no dashboard para carregar dados.
+
+## 🧭 Roteamento: Navegar Entre Páginas
+
+### Configuração de Rotas
+```typescript
+// app.routes.ts
+export const routes: Routes = [
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: 'dashboard', component: DashboardPage },
+  { path: 'clientes', component: ClientesPage },
+];
+```
+
+### Navegação Programática
+```typescript
+private router = inject(Router);
+
+navegarParaCliente(id: number) {
+  this.router.navigate(['/clientes', id]);
+}
+```
+
+**No EnergyHub**: Rotas para dashboard, clientes, contratos.
+
+## 📝 Formulários: Reativos (Reactive Forms) São Mais Poderosos
+
+### Formulário Reativo
+```typescript
+import { FormBuilder, Validators } from '@angular/forms';
+
+export class ClienteFormComponent {
+  private fb = inject(FormBuilder);
+
+  clienteForm = this.fb.group({
+    nome: ['', [Validators.required, Validators.minLength(3)]],
+    consumoMedio: [0, [Validators.required, Validators.min(1)]],
+    regiao: ['', Validators.required]
+  });
+
+  salvar() {
+    if (this.clienteForm.valid) {
+      // Enviar para API
+    }
+  }
+}
+```
+
+**Template**:
+```html
+<form [formGroup]="clienteForm" (ngSubmit)="salvar()">
+  <input formControlName="nome" placeholder="Nome do cliente">
+  <input type="number" formControlName="consumoMedio">
+  <select formControlName="regiao">
+    <option value="Sudeste">Sudeste</option>
+  </select>
+  <button type="submit" [disabled]="!clienteForm.valid">Salvar</button>
+</form>
+```
+
+**No EnergyHub**: Usado no dashboard para simulação de economia com validação.
 
 ## 1️⃣ Componentes - A Base do Angular
 

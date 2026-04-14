@@ -24,8 +24,16 @@ public async Task<List<Cliente>> GetAllAsync()
 }
 
     public async Task<Cliente?> GetByIdAsync(int id)
+{
+    return await _context.Clientes
+        .Include(c => c.Contratos)
+        .Include(c => c.Consumos)
+        .FirstOrDefaultAsync(c => c.Id == id);
+}
+
+    public async Task<bool> ExistsAsync(int id)
     {
-        return await _context.Clientes.FindAsync(id);
+        return await _context.Clientes.AnyAsync(c => c.Id == id);
     }
 
     public async Task<Cliente> CreateAsync(CreateClienteDto dto)

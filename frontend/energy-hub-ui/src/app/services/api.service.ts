@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { Cliente, CreateCliente, UpdateCliente } from '../models/cliente.model';
 import { Contrato, CreateContrato } from '../models/contrato.model';
 import { EconomiaSimulacao } from '../models/economia.model';
+import { ClienteDetail } from '../models/cliente-detail.model';
+import { Dashboard } from '../models/dashboard.model';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +61,18 @@ export class ApiService {
   }
 
   calcularEconomia(clienteId: number, precoAtualMwh: number): Observable<EconomiaSimulacao> {
-    return this.http.get<EconomiaSimulacao>(`${this.baseUrl}/clientes/${clienteId}/economia?precoAtual=${precoAtualMwh}`);
+    return this.http.post<EconomiaSimulacao>(
+      `${this.baseUrl}/clientes/${clienteId}/simular-economia?precoMercadoAtualMwh=${precoAtualMwh}`,
+      {}
+    );
+  }
+
+  getClientesWithDetails(): Observable<ClienteDetail[]> {
+    return this.http.get<ClienteDetail[]>(`${this.baseUrl}/clientes/com-detalhes`);
+  }
+
+  getDashboard(): Observable<Dashboard> {
+    return this.http.get<Dashboard>(`${this.baseUrl}/dashboard`);
   }
 }
 

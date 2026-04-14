@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { Cliente, CreateCliente, UpdateCliente } from '../../models/cliente.model';
+import { ClienteDetail } from '../../models/cliente-detail.model';
 
 @Component({
   selector: 'app-clientes',
@@ -40,37 +41,93 @@ import { Cliente, CreateCliente, UpdateCliente } from '../../models/cliente.mode
             <div class="bg-gradient-to-br from-slate-800/50 to-slate-900 border border-slate-700/50 rounded-2xl overflow-hidden hover:border-slate-600 transition-all">
               <div class="overflow-x-auto">
                 <table class="w-full text-sm">
+
                   <thead class="bg-slate-950/80 border-b border-slate-700">
-                    <tr>
-                      <th class="px-6 py-4 text-left font-semibold text-slate-300 uppercase tracking-wider text-xs">Nome</th>
-                      <th class="px-6 py-4 text-left font-semibold text-slate-300 uppercase tracking-wider text-xs">CNPJ</th>
-                      <th class="px-6 py-4 text-left font-semibold text-slate-300 uppercase tracking-wider text-xs">Consumo</th>
-                      <th class="px-6 py-4 text-left font-semibold text-slate-300 uppercase tracking-wider text-xs">Região</th>
-                      <th class="px-6 py-4 text-right font-semibold text-slate-300 uppercase tracking-wider text-xs">Ações</th>
-                    </tr>
-                  </thead>
-                  <tbody class="divide-y divide-slate-700">
-                    @for (cliente of clientes(); track cliente.id) {
-                      <tr class="hover:bg-slate-700/40 transition-all hover:border-l-4 hover:border-l-emerald-500">
-                        <td class="px-6 py-4 text-slate-100 font-medium">{{ cliente.nome }}</td>
-                        <td class="px-6 py-4 text-slate-400 font-mono text-xs">{{ cliente.cnpj }}</td>
-                        <td class="px-6 py-4">
-                          <span class="font-bold bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">{{ cliente.consumoMedio | number:'1.0-0' }} MWh</span>
-                        </td>
-                        <td class="px-6 py-4">
-                          <span class="px-3 py-1.5 text-xs font-medium bg-blue-900/30 text-blue-300 border border-blue-700/50 rounded-full">{{ cliente.regiao }}</span>
-                        </td>
-                        <td class="px-6 py-4 text-right space-x-2">
-                          <button (click)="editar(cliente.id)" class="px-3 py-1.5 text-xs font-medium bg-sky-500/20 text-sky-400 hover:text-sky-300 hover:bg-sky-500/30 rounded-lg transition-all">
-                            ✏️ Editar
-                          </button>
-                          <button (click)="deletar(cliente.id)" class="px-3 py-1.5 text-xs font-medium bg-red-500/20 text-red-400 hover:text-red-300 hover:bg-red-500/30 rounded-lg transition-all">
-                            🗑️ Deletar
-                          </button>
-                        </td>
-                      </tr>
-                    }
-                  </tbody>
+  <tr>
+    <th class="px-6 py-4  text-left text-xs text-slate-400">ID</th>
+    <th class="px-6 py-4 text-left text-xs text-slate-400">Nome</th>
+    <th class="px-6 py-4 text-left text-xs text-slate-400">CNPJ</th>
+    <th class="px-6 py-4 text-left text-xs text-slate-400">Consumo</th>
+    <th class="px-6 py-4 text-left text-xs text-slate-400">Região</th>
+    <th class="px-6 py-4 text-left text-xs text-slate-400">Contrato</th>
+    <th class="px-6 py-4 text-left text-xs text-slate-400">Economia</th>
+    <th class="px-6 py-4 text-right text-xs text-slate-400">Ações</th>
+  </tr>
+</thead>
+
+<tbody class="divide-y divide-slate-700">
+  @for (cliente of clientes(); track cliente.id) {
+    <tr class="hover:bg-slate-700/40 transition-all hover:border-l-4 hover:border-l-emerald-500">
+
+      <!-- ID -->
+      <td class="px-6 py-4 text-slate-500 font-mono text-xs">
+        #{{ cliente.id }}
+      </td>
+
+      <!-- Nome -->
+      <td class="px-6 py-4 text-slate-100 font-semibold">
+        {{ cliente.nome }}
+      </td>
+
+      <!-- CNPJ -->
+      <td class="px-6 py-4 text-slate-400 font-mono text-xs">
+        {{ cliente.cnpj }}
+      </td>
+
+      <!-- Consumo -->
+      <td class="px-6 py-4">
+        <span class="font-bold text-amber-400">
+          {{ cliente.consumoMedio | number:'1.0-0' }} MWh
+        </span>
+      </td>
+
+      <!-- Região -->
+      <td class="px-6 py-4">
+        <span class="px-3 py-1 text-xs bg-blue-900/30 text-blue-300 rounded-full">
+          {{ cliente.regiao }}
+        </span>
+      </td>
+
+      <!-- Status do contrato -->
+      <td class="px-6 py-4">
+        <span
+          class="px-3 py-1 text-xs font-semibold rounded-full"
+          [ngClass]="cliente.statusContrato?.includes('Ativo')
+            ? 'bg-emerald-500/20 text-emerald-400'
+            : 'bg-red-500/20 text-red-400'">
+          {{ cliente.statusContrato }}
+        </span>
+      </td>
+
+      <!-- Economia -->
+      <td class="px-6 py-4">
+        <span class="font-bold text-emerald-400">
+          R$ {{ cliente.economiaEstimada | number:'1.0-0' }}
+        </span>
+      </td>
+
+      <!-- Ações -->
+      <td class="px-6 py-4 text-right space-x-2">
+        <button (click)="editar(cliente.id)"
+          class="px-3 py-1 text-xs bg-sky-500/20 text-sky-400 hover:bg-sky-500/30 rounded-lg">
+          ✏️
+        </button>
+
+        <button (click)="deletar(cliente.id)"
+          class="px-3 py-1 text-xs bg-red-500/20 text-red-400 hover:bg-red-500/30 rounded-lg">
+          🗑️
+        </button>
+
+        <!-- BOTÃO NOVO 🔥 -->
+        <a [routerLink]="['/contratos/novo']"
+          class="px-3 py-1 text-xs bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg">
+          ➕ Contrato
+        </a>
+      </td>
+
+    </tr>
+  }
+</tbody>
                 </table>
               </div>
             </div>
@@ -82,8 +139,8 @@ import { Cliente, CreateCliente, UpdateCliente } from '../../models/cliente.mode
 })
 export class ClientesPage implements OnInit {
   private apiService = inject(ApiService);
-  
-  clientes = signal<Cliente[]>([]);
+
+  clientes = signal<ClienteDetail[]>([]);
   carregando = signal(true);
 
 
@@ -96,8 +153,8 @@ export class ClientesPage implements OnInit {
     this.carregando.set(true);
     this.clientes.set([]);
 
-    this.apiService.getClientes().subscribe({
-      next: (data: Cliente[]) => {
+    this.apiService.getClientesWithDetails().subscribe({
+      next: (data: ClienteDetail[]) => {
         this.clientes.set(data);
         this.carregando.set(false);
       },

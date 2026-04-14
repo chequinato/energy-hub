@@ -25,6 +25,7 @@ builder.Services.AddScoped<ClienteService>();
 builder.Services.AddScoped<IClienteService>(provider => provider.GetService<ClienteService>()!);
 builder.Services.AddScoped<IContratoRepository, ContratoRepository>();
 builder.Services.AddScoped<IContratoService, ContratoService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 // CORS for Angular (localhost:4200)
 builder.Services.AddCors(options =>

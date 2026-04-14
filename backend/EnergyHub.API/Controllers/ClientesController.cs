@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc;
 using EnergyHub.API.DTOs;
 using EnergyHub.API.Services;
 
@@ -23,10 +22,28 @@ public class ClientesController : ControllerBase
         return Ok(clientes);
     }
 
+    [HttpGet("com-detalhes")]
+    public async Task<ActionResult<List<ClienteDetailDto>>> GetClientesWithDetails()
+    {
+        var clientes = await _clienteService.GetAllWithDetailsAsync();
+        return Ok(clientes);
+    }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<ClienteDto>> GetCliente(int id)
     {
         var cliente = await _clienteService.GetByIdAsync(id);
+        if (cliente == null)
+        {
+            return NotFound();
+        }
+        return Ok(cliente);
+    }
+
+    [HttpGet("{id}/detalhes")]
+    public async Task<ActionResult<ClienteDetailDto>> GetClienteWithDetails(int id)
+    {
+        var cliente = await _clienteService.GetByIdWithDetailsAsync(id);
         if (cliente == null)
         {
             return NotFound();
@@ -61,6 +78,38 @@ public class ClientesController : ControllerBase
             return NotFound();
         }
         return NoContent();
+    }
+
+    [HttpGet("{clienteId}/economia")]
+    public async Task<ActionResult<EconomiaSimulacaoDto>> CalcularEconomiaComContrato(
+        int clienteId,
+        [FromQuery] decimal precoAtual)
+    {
+        try
+        {
+            var economia = await _clienteService.SimularEconomiaComContratoAsync(clienteId, precoAtual);
+            return Ok(economia);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPost("{clienteId}/simular-economia")]
+    public async Task<ActionResult<EconomiaSimulacaoDto>> SimularEconomiaComContrato(
+        int clienteId,
+        [FromQuery] decimal precoMercadoAtualMwh)
+    {
+        try
+        {
+            var economia = await _clienteService.SimularEconomiaComContratoAsync(clienteId, precoMercadoAtualMwh);
+            return Ok(economia);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }
 

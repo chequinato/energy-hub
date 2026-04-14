@@ -7,7 +7,7 @@ Simula o que um banco faria:
 cadastro de clientes
 contratos de energia
 cálculo de economia
-dashboard
+dashboard com métricas reais e ranking de clientes
 
 🧱 🧠 Arquitetura (simples e profissional)
 
@@ -27,11 +27,26 @@ energy-hub/
  ├── backend/
  │    └── EnergyHub.API/
  │         ├── Controllers/
+ │         │    ├── DashboardController.cs (métricas e ranking)
+ │         │    ├── ClientesController.cs (com simulação de economia)
+ │         │    └── ContratosController.cs
  │         ├── Services/
+ │         │    ├── DashboardService.cs (cálculo de economia total e ranking)
+ │         │    ├── ClienteService.cs (simulação de economia com contratos)
+ │         │    └── ContratoService.cs
  │         ├── Repositories/
+ │         │    ├── ClienteRepository.cs (carregamento de contratos)
+ │         │    └── ContratoRepository.cs
  │         ├── Entities/
+ │         │    ├── Cliente.cs
+ │         │    ├── Contrato.cs
+ │         │    └── Consumo.cs
  │         ├── DTOs/
+ │         │    ├── DashboardDto.cs (métricas e top clientes)
+ │         │    ├── ClienteDetailDto.cs
+ │         │    └── EconomiaSimulacaoDto.cs
  │         ├── Data/
+ │         │    └── ApplicationDbContext.cs
  │         ├── Program.cs
  │         └── appsettings.json
  │
@@ -41,8 +56,15 @@ energy-hub/
  │         │    ├── app/
  │         │    │    ├── components/
  │         │    │    ├── pages/
+ │         │    │    │    ├── dashboard/ (conectado ao backend)
+ │         │    │    │    ├── clientes/
+ │         │    │    │    └── contratos/
  │         │    │    ├── services/
+ │         │    │    │    └── api.service.ts (HTTP client)
  │         │    │    └── models/
+ │         │    │         ├── dashboard.model.ts
+ │         │    │         ├── cliente-detail.model.ts
+ │         │    │         └── economia.model.ts
  │
  ├── infra/
  │    └── (Terraform depois)

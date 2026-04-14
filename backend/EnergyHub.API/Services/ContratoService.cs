@@ -7,80 +7,65 @@ namespace EnergyHub.API.Services;
 public class ContratoService : IContratoService
 {
     private readonly IContratoRepository _repository;
+    private readonly IClienteRepository _clienteRepository;
 
-    public ContratoService(IContratoRepository repository)
+    public ContratoService(IContratoRepository repository, IClienteRepository clienteRepository)
     {
         _repository = repository;
+        _clienteRepository = clienteRepository;
+    }
+
+    private ContratoDto MapToDto(Contrato c)
+    {
+        var status = ContratoStatusHelper.GetStatus(c.DataInicio, c.DataFim);
+        return new ContratoDto
+        {
+            Id = c.Id,
+            ClienteId = c.ClienteId,
+            PrecoMwh = c.PrecoMwh,
+            Fornecedor = c.Fornecedor,
+            DataInicio = c.DataInicio,
+            DataFim = c.DataFim,
+            Status = status,
+            StatusBadge = ContratoStatusHelper.GetStatusBadge(status)
+        };
     }
 
     public async Task<List<ContratoDto>> GetAllAsync()
     {
         var contratos = await _repository.GetAllAsync();
-        return contratos.Select(c => new ContratoDto
-        {
-            Id = c.Id,
-            ClienteId = c.ClienteId,
-            PrecoMwh = c.PrecoMwh,
-            Fornecedor = c.Fornecedor,
-            DataInicio = c.DataInicio,
-            DataFim = c.DataFim
-        }).ToList();
+        return contratos.Select(MapToDto).ToList();
     }
 
     public async Task<List<ContratoDto>> GetByClienteIdAsync(int clienteId)
     {
         var contratos = await _repository.GetByClienteIdAsync(clienteId);
-        return contratos.Select(c => new ContratoDto
-        {
-            Id = c.Id,
-            ClienteId = c.ClienteId,
-            PrecoMwh = c.PrecoMwh,
-            Fornecedor = c.Fornecedor,
-            DataInicio = c.DataInicio,
-            DataFim = c.DataFim
-        }).ToList();
+        return contratos.Select(MapToDto).ToList();
     }
 
     public async Task<ContratoDto?> GetByIdAsync(int id)
     {
         var contrato = await _repository.GetByIdAsync(id);
-        return contrato == null ? null : new ContratoDto
-        {
-            Id = contrato.Id,
-            ClienteId = contrato.ClienteId,
-            PrecoMwh = contrato.PrecoMwh,
-            Fornecedor = contrato.Fornecedor,
-            DataInicio = contrato.DataInicio,
-            DataFim = contrato.DataFim
-        };
+        return contrato == null ? null : MapToDto(contrato);
     }
 
     public async Task<ContratoDto> CreateAsync(CreateContratoDto dto)
     {
-        var contrato = await _repository.CreateAsync(dto);
-        return new ContratoDto
+        // Validação: Cliente deve existir
+        var clienteExiste = await _clienteRepository.ExistsAsync(dto.ClienteId);
+        if (!clienteExiste)
         {
-            Id = contrato.Id,
-            ClienteId = dto.ClienteId,
-            PrecoMwh = dto.PrecoMwh,
-            Fornecedor = dto.Fornecedor,
-            DataInicio = dto.DataInicio,
-            DataFim = dto.DataFim
-        };
+            throw new ArgumentException($"Cliente com ID {dto.ClienteId} não encontrado");
+        }
+
+        var contrato = await _repository.CreateAsync(dto);
+        return MapToDto(contrato);
     }
 
     public async Task<ContratoDto?> UpdateAsync(int id, CreateContratoDto dto)
     {
         var contrato = await _repository.UpdateAsync(id, dto);
-        return contrato == null ? null : new ContratoDto
-        {
-            Id = contrato.Id,
-            ClienteId = dto.ClienteId,
-            PrecoMwh = dto.PrecoMwh,
-            Fornecedor = dto.Fornecedor,
-            DataInicio = dto.DataInicio,
-            DataFim = dto.DataFim
-        };
+        return contrato == null ? null : MapToDto(contrato);
     }
 
     public async Task<bool> DeleteAsync(int id)
