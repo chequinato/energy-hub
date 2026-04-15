@@ -263,19 +263,21 @@ public async Task AddAsync(Cliente cliente)
 
 ## 📊 Entidades do EnergyHub
 
-### Cliente
+### Cliente (**Atualizado**)
 ```csharp
 public class Cliente
 {
     public int Id { get; set; }
-    public string Nome { get; set; }          // "Empresa XYZ"
-    public string Cnpj { get; set; }          // "12.345.678/0001-90"
-    public decimal ConsumoMedio { get; set; } // 150.5 MWh
-    public string Regiao { get; set; }        // "Sudeste"
+    public string Nome { get; set; }
+    public string Cnpj { get; set; }
+    public decimal ConsumoMedio { get; set; } // ← **Média calculada de Consumo real**
+    public string Regiao { get; set; }
     
-    public List<Contrato> Contratos { get; set; } // Relacionamento 1:N
+    public List<Contrato> Contratos { get; set; }
+    public List<Consumo> Consumos { get; set; } // ← Novo: 1:N com consumo real
 }
 ```
+
 
 ### Contrato
 ```csharp
@@ -348,7 +350,29 @@ public class CreateClienteDto
 }
 ```
 
+### Consumo (Nova Entidade)
+```csharp
+public class Consumo
+{
+    public int Id { get; set; }
+    public int ClienteId { get; set; }
+    public string Mes { get; set; }      // "2025-04"
+    public decimal ConsumoMwh { get; set; }  // Real
+}
+```
+
+**Exemplo Controller** (`ConsumoController`):
+```csharp
+[HttpGet("cliente/{clienteId}/media")]
+public async Task<ActionResult> GetConsumoMedio(int clienteId)
+{
+    var media = await _service.GetConsumoMedioClienteAsync(clienteId);
+    return Ok(new { consumoMedioMensal = media });  // Atualiza Cliente.ConsumoMedio
+}
+```
+
 ## ✅ Resumo da Arquitetura
+
 
 A arquitetura em 3 camadas garante:
 - **Separação de responsabilidades** - cada camada tem um trabalho

@@ -199,6 +199,11 @@ import { Dashboard } from '../../models/dashboard.model';
                         </span>
                       </div>
                     </div>
+                    @if (getAlertaConsumo(cliente.variacaoPercentual)) {
+                      <p class="text-xs font-semibold mt-2 text-red-400">
+                        {{ getAlertaConsumo(cliente.variacaoPercentual) }}
+                      </p>
+                    }
                   </div>
                   <div class="text-right mt-3 md:mt-0 md:ml-4">
                     <span class="text-lg font-bold text-amber-400 block">R$ {{ cliente.economiaEstimada | number:'1.0-0' }}</span>
@@ -235,6 +240,12 @@ export class DashboardPage {
   constructor() {
     this.loadDashboard();
     this.loadClientes();
+  }
+
+  getAlertaConsumo(variacao: number): null | string {
+    if (variacao > 50) return '⚠️ Consumo muito acima do estimado';
+    if (variacao < -30) return '💡 Consumo abaixo do esperado';
+    return null;
   }
 
   trackById(index: number, item: ClienteDetail) {

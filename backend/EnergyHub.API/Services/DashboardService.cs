@@ -90,12 +90,25 @@ public class DashboardService : IDashboardService
 
         // Calcular métricas gerais de consumo
         decimal consumoTotalRegistrado = analiseConsumoList.Sum(x => x.TotalConsumido);
-        decimal consumoMedioGeral = analiseConsumoList.Count > 0 ? 
-            Math.Round(analiseConsumoList.Average(x => x.ConsumoMedioReal), 2) : 0;
-        decimal variacaoMediaGeral = analiseConsumoList.Count > 0 ?
-            Math.Round(analiseConsumoList.Average(x => x.VariacaoPercentual), 2) : 0;
-        decimal tendenciaMediaGeral = analiseConsumoList.Count > 0 ?
-            Math.Round(analiseConsumoList.Average(x => x.TendenciaPercentual), 2) : 0;
+        decimal consumoMedioGeral = analiseConsumoList.Count > 0
+            ? Math.Round(analiseConsumoList.Average(x =>
+                x.ConsumoMedioReal > 0 ? x.ConsumoMedioReal : x.ConsumoEstimado
+            ), 2)
+            : 0;
+        var variacoesValidas = analiseConsumoList
+            .Where(x => x.ConsumoMedioReal > 0)
+            .ToList();
+
+        decimal variacaoMediaGeral = variacoesValidas.Count > 0
+            ? Math.Round(variacoesValidas.Average(x => x.VariacaoPercentual), 2)
+            : 0;
+        var tendenciasValidas = analiseConsumoList
+            .Where(x => x.ConsumoMedioReal > 0)
+            .ToList();
+
+        decimal tendenciaMediaGeral = tendenciasValidas.Count > 0
+            ? Math.Round(tendenciasValidas.Average(x => x.TendenciaPercentual), 2)
+            : 0;
 
         return new DashboardDto
         {

@@ -27,7 +27,10 @@ energy-hub/
  ├── backend/
  │    └── EnergyHub.API/
  │         ├── Controllers/
- │         │    ├── DashboardController.cs (métricas e ranking)
+ │         │    ├── DashboardController.cs (métricas, ranking, **consumo KPIs**)
+ │         │    ├── **ConsumoController.cs (consumo real/estimado)**
+ │         │    ├── ClientesController.cs (com simulação de economia)
+
  │         │    ├── ClientesController.cs (com simulação de economia)
  │         │    └── ContratosController.cs
  │         ├── Services/
@@ -57,12 +60,16 @@ energy-hub/
  │         │    │    ├── components/
  │         │    │    ├── pages/
  │         │    │    │    ├── dashboard/ (conectado ao backend)
+ │         │    │    │    ├── **consumos/ (consumo real)**
  │         │    │    │    ├── clientes/
  │         │    │    │    └── contratos/
  │         │    │    ├── services/
  │         │    │    │    └── api.service.ts (HTTP client)
  │         │    │    └── models/
- │         │    │         ├── dashboard.model.ts
+ │         │         ├── dashboard.model.ts (**com consumo KPIs**)
+ │         │         ├── **consumo.model.ts**
+ │         │         ├── cliente-detail.model.ts
+
  │         │    │         ├── cliente-detail.model.ts
  │         │    │         └── economia.model.ts
  │
@@ -161,11 +168,11 @@ PrecoMwh
 Fornecedor
 DataInicio
 DataFim
-Consumo
+Consumo (**Atualizado: consumo real mensal**)
 Id
 ClienteId
-Mes
-ConsumoMwh
+Mes (**YYYY-MM**)
+ConsumoMwh (**real medido**)
 
 🔥 Funcionalidades (MVP)
 1. Clientes
@@ -179,9 +186,9 @@ vincular cliente
 3. Simulação de economia (🔥 destaque)
 calcula custo atual vs mercado livre
 mostra economia %
-4. Dashboard
-consumo
-economia
+4. Dashboard (**atualizado**)
+**consumo real/estimado**
+economia (**com variação %**)
 contratos
 🧠 Regras de negócio (importante)
 

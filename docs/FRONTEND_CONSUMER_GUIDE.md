@@ -484,7 +484,23 @@ Content-Type: application/json
 
 ---
 
-## 📝 Checklist: O que Mudou no Frontend
+## 🔌 ConsumoService (Novo)
+```typescript
+// services/consumo.service.ts (ou api.service.ts)
+getConsumos(): Observable<Consumo[]> {
+  return this.http.get<Consumo[]>('api/consumo');
+}
+getConsumosCliente(clienteId: number): Observable<Consumo[]> {
+  return this.http.get<Consumo[]>(`api/consumo/cliente/${clienteId}`);
+}
+```
+
+## 📝 Checklist: O que Mudou no Frontend (Atualizado)
+- [ ] **consumo.model.ts criado**
+- [ ] **consumos.page.ts: CRUD completo**
+- [ ] Filtros por cliente na lista
+- [ ] Dashboard KPIs de consumo
+
 
 - [ ] Criar interfaces TypeScript para as novas DTOs
 - [ ] Atualizar `ClienteService` com novos métodos

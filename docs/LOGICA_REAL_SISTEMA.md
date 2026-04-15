@@ -120,29 +120,65 @@ ContratoStatus status = ContratoStatusHelper.GetStatus(dataInicio, dataFim);
 }
 ```
 
-### 4️⃣ Dashboard com Estatísticas
+### 4️⃣ Dashboard com Estatísticas (Atualizado com Consumo)
 ```json
 {
-  "totalContratos": 50,           // Total de contratos no sistema
-  "totalContratosAtivos": 35,     // Apenas os que estão valendo
-  "totalContratosExpirados": 12,  // Que já expiraram
-  "totalContratosFuturos": 3,     // Que ainda não começaram
-  "totalClientes": 20,            // Total de clientes
-  "clientesComContratoAtivo": 15, // Que têm contrato ativo
-  "economiaTotal": 1750000.00,    // Soma de todas as economias
-  "economiaMensal": 145833.33,    // Economia por mês
-  "topClientesEconomia": [        // Top 5 clientes
+  "totalContratos": 50,
+  "totalContratosAtivos": 35,
+  "totalContratosExpirados": 12,
+  "totalContratosFuturos": 3,
+  "totalClientes": 20,
+  "clientesComContratoAtivo": 15,
+  "economiaTotal": 1750000.00,
+  "economiaMensal": 145833.33,
+  // ← NOVOS KPIs de Consumo Real:
+  "consumoTotalRegistrado": 12500.00,    // Soma total MWh reais
+  "consumoMedioGeral": 450.50,           // Média geral mensal
+  "variacaoMediaConsumoCli": 5.2,        // % variação média vs estimado
+  "tendenciaMediaConsumoCli": 2.1,       // % tendência mensal
+  "topClientesEconomia": [               // Atualizado:
     {
       "clienteId": 1,
       "nomeCliente": "Cliente A",
+      "consumoMedioMensal": 500,         // ← Estimado
+      "consumoEstimado": 500,
       "economiaEstimada": 375000.00,
-      "fornecedor": "Fornecedor X"
+      "fornecedor": "Fornecedor X",
+      "variacaoPercentual": -3.2,        // Real vs estimado
+      "tendenciaPercentual": 1.8         // Últimos meses
     }
   ]
 }
 ```
 
+
 ### 5️⃣ Simulação de Economia
+**API:** `POST /api/clientes/{id}/simular-economia?precoMercadoAtualMwh=X`
+
+```
+Entrada:
+  - clienteId: 1
+  - precoMercadoAtualMwh: 400.00
+
+Lógica:
+  1. Busca cliente
+  2. Encontra seu contrato ativo
+  3. Usa **consumoMwh real médio** do cliente (de registros Consumo)
+  4. Compara:
+     - Preço contrato: 250.50 R$/MWh
+     - Preço mercado: 400.00 R$/MWh
+  5. Calcula economia: (400.00 - 250.50) × consumoRealMedio = 74.750 R$/mês
+
+Saída:
+{
+  "clienteId": 1,
+  "consumoMwh": 520,  // ← Real médio dos últimos 12 meses
+  "precoAtualMwh": 400.00,
+  "economiaPercentual": 37.50,
+  "economiaValor": 74750.00
+}
+```
+
 **API:** `POST /api/clientes/{id}/simular-economia?precoMercadoAtualMwh=X`
 
 ```
@@ -278,7 +314,34 @@ Contratos: [
 
 ---
 
+### 6️⃣ Consumo Real vs Estimado (Nova Funcionalidade)
+```csharp
+public class Consumo
+{
+    public int Id { get; set; }
+    public int ClienteId { get; set; }
+    public string Mes { get; set; }     // "2025-04"
+    public decimal ConsumoMwh { get; set; }  // Real medido
+}
+```
+
+**Endpoints /api/consumo**:
+- `GET /api/consumo/cliente/{id}`: Histórico real do cliente
+- `GET /api/consumo/cliente/{id}/media`: **Consumo médio real** (atualiza Cliente.ConsumoMedio)
+- **Integração Dashboard**: Usa dados reais para KPIs precisos (variação real vs estimado)
+
+**Lógica**:
+```
+Consumo Estimado = Cliente.ConsumoMedio (fixo)
+Consumo Real = AVG(Consumo.Mwh dos últimos 12 meses)
+Variação % = ((Real - Estimado) / Estimado) * 100
+```
+
+**Exemplo**:
+Cliente A: Estimado 500 MWh → Real últimos 6 meses: 485 MWh → Variação -3%
+
 ## 🎓 Próximos Passos (Sugestões)
+
 
 ### Frontend - Dashboard
 ```
