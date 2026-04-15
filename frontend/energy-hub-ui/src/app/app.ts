@@ -7,10 +7,9 @@ import { NavComponent } from './components/nav/nav.component';
   selector: 'app-root',
   imports: [RouterOutlet, NavComponent],
   template: `
-    <div class="eh-app min-h-screen w-full">
+    <div class="eh-app">
       <app-nav />
-
-      <main class="w-full min-h-screen">
+      <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         <router-outlet />
       </main>
     </div>
@@ -20,3 +19,4 @@ import { NavComponent } from './components/nav/nav.component';
 export class App {
   title = signal('EnergyHub');
 }
+
