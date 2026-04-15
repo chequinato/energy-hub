@@ -1,11 +1,14 @@
-# EnergyHub Documentation Update TODO
+# Task: Adicionar borda arredondada e aumentar largura do conteúdo home
 
-## Plan Breakdown
-- [x] 1. Understand files (read_file on 4 .md + code files) - Complete
-- [x] 2. Create plan & get approval - Complete
-- [ ] 3. Update docs/LOGICA_REAL_SISTEMA.md (add /consumo logic, new dashboard KPIs)
-- [ ] 4. Update docs/summary.md (add structure mentions)
-- [ ] 5. Update docs/ENTENDER_ARQUITETURA.md (add Consumo examples)
-- [ ] 6. Update docs/FRONTEND_CONSUMER_GUIDE.md (add consumos page)
-- [ ] 7. attempt_completion
+**Status:** Em progresso
+
+## Passos:
+- [x] Analisar arquivos
+- [x] Criar plano
+- [x] 1. Editar home.page.ts (borda arredondada + largura)
+- [ ] 2. Testar no navegador
+- [ ] 3. Marcar como concluído
+
+**Mudanças:** 
+- Section hero: rounded-3xl + mx- margins para largura + reduced inner padding
 
