@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Cliente, CreateCliente, UpdateCliente } from '../models/cliente.model';
 import { Contrato, CreateContrato } from '../models/contrato.model';
+import { Consumo, CreateConsumo, UpdateConsumo, ConsumoMedio } from '../models/consumo.model';
 import { EconomiaSimulacao } from '../models/economia.model';
 import { ClienteDetail } from '../models/cliente-detail.model';
 import { Dashboard } from '../models/dashboard.model';
@@ -73,6 +74,31 @@ export class ApiService {
 
   getDashboard(): Observable<Dashboard> {
     return this.http.get<Dashboard>(`${this.baseUrl}/dashboard`);
+  }
+
+  // Consumos
+  getConsumos(): Observable<Consumo[]> {
+    return this.http.get<Consumo[]>(`${this.baseUrl}/consumo`);
+  }
+
+  getConsumosByCliente(clienteId: number): Observable<Consumo[]> {
+    return this.http.get<Consumo[]>(`${this.baseUrl}/consumo/cliente/${clienteId}`);
+  }
+
+  getConsumoMedio(clienteId: number): Observable<ConsumoMedio> {
+    return this.http.get<ConsumoMedio>(`${this.baseUrl}/consumo/cliente/${clienteId}/media`);
+  }
+
+  createConsumo(consumo: CreateConsumo): Observable<Consumo> {
+    return this.http.post<Consumo>(`${this.baseUrl}/consumo`, consumo);
+  }
+
+  updateConsumo(id: number, consumo: UpdateConsumo): Observable<Consumo> {
+    return this.http.put<Consumo>(`${this.baseUrl}/consumo/${id}`, consumo);
+  }
+
+  deleteConsumo(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/consumo/${id}`);
   }
 }
 

@@ -13,11 +13,16 @@ public class DashboardService : IDashboardService
 {
     private readonly IClienteRepository _clienteRepository;
     private readonly IContratoRepository _contratoRepository;
+    private readonly IConsumoService _consumoService;
 
-    public DashboardService(IClienteRepository clienteRepository, IContratoRepository contratoRepository)
+    public DashboardService(
+        IClienteRepository clienteRepository, 
+        IContratoRepository contratoRepository,
+        IConsumoService consumoService)
     {
         _clienteRepository = clienteRepository;
         _contratoRepository = contratoRepository;
+        _consumoService = consumoService;
     }
 
     public async Task<DashboardDto> GetDashboardAsync()
@@ -40,30 +45,41 @@ public class DashboardService : IDashboardService
         decimal precoReferencia = 500m;
         decimal economiaTotal = 0;
 
-        var allClientesEconomia = clientes
-            .Where(c => c.Contratos != null && c.Contratos.Count > 0)
-            .Select(c =>
+        var allClientesEconomia = new List<ClienteEconomiaDto>();
+        var analiseConsumoList = new List<DashboardConsumoDto>();
+
+        foreach (var c in clientes.Where(c => c.Contratos != null && c.Contratos.Count > 0))
+        {
+            var contratoAtivo = c.Contratos!
+                .FirstOrDefault(ct => ContratoStatusHelper.GetStatus(ct.DataInicio, ct.DataFim) == ContratoStatus.Ativo);
+
+            if (contratoAtivo == null)
+                continue;
+
+            // Obter análise detalhada de consumo
+            var analiseConsumo = await _consumoService.GetAnaliseConsumoClienteAsync(c.Id, c.ConsumoMedio);
+            analiseConsumoList.Add(analiseConsumo);
+
+            // Usar consumo médio real se houver histórico, senão usa estimado
+            decimal consumoMedio = analiseConsumo.ConsumoMedioReal > 0 ? analiseConsumo.ConsumoMedioReal : analiseConsumo.ConsumoEstimado;
+
+            decimal diferenca = precoReferencia - contratoAtivo.PrecoMwh;
+            decimal economia = diferenca * consumoMedio;
+
+            var dto = new ClienteEconomiaDto
             {
-                var contratoAtivo = c.Contratos!
-                    .FirstOrDefault(ct => ContratoStatusHelper.GetStatus(ct.DataInicio, ct.DataFim) == ContratoStatus.Ativo);
+                ClienteId = c.Id,
+                NomeCliente = c.Nome,
+                ConsumoMedioMensal = consumoMedio,
+                ConsumoEstimado = analiseConsumo.ConsumoEstimado,
+                VariacaoPercentual = analiseConsumo.VariacaoPercentual,
+                TendenciaPercentual = analiseConsumo.TendenciaPercentual,
+                EconomiaEstimada = Math.Round(economia, 2),
+                Fornecedor = contratoAtivo.Fornecedor
+            };
 
-                if (contratoAtivo == null)
-                    return null;
-
-                decimal diferenca = precoReferencia - contratoAtivo.PrecoMwh;
-                decimal economia = diferenca * c.ConsumoMedio;
-
-                return new ClienteEconomiaDto
-                {
-                    ClienteId = c.Id,
-                    NomeCliente = c.Nome,
-                    EconomiaEstimada = Math.Round(economia, 2),
-                    Fornecedor = contratoAtivo.Fornecedor
-                };
-            })
-            .Where(x => x != null)
-            .Select(x => x!)
-            .ToList();
+            allClientesEconomia.Add(dto);
+        }
 
         var topClientesEconomia = allClientesEconomia
             .OrderByDescending(x => x.EconomiaEstimada)
@@ -71,6 +87,15 @@ public class DashboardService : IDashboardService
             .ToList();
 
         economiaTotal = allClientesEconomia.Sum(x => x.EconomiaEstimada);
+
+        // Calcular métricas gerais de consumo
+        decimal consumoTotalRegistrado = analiseConsumoList.Sum(x => x.TotalConsumido);
+        decimal consumoMedioGeral = analiseConsumoList.Count > 0 ? 
+            Math.Round(analiseConsumoList.Average(x => x.ConsumoMedioReal), 2) : 0;
+        decimal variacaoMediaGeral = analiseConsumoList.Count > 0 ?
+            Math.Round(analiseConsumoList.Average(x => x.VariacaoPercentual), 2) : 0;
+        decimal tendenciaMediaGeral = analiseConsumoList.Count > 0 ?
+            Math.Round(analiseConsumoList.Average(x => x.TendenciaPercentual), 2) : 0;
 
         return new DashboardDto
         {
@@ -82,6 +107,10 @@ public class DashboardService : IDashboardService
             ClientesComContratoAtivo = clientesComContratoAtivo,
             EconomiaTotal = Math.Round(economiaTotal, 2),
             EconomiaMensal = Math.Round(economiaTotal / 12, 2),
+            ConsumoTotalRegistrado = Math.Round(consumoTotalRegistrado, 2),
+            ConsumoMedioGeral = consumoMedioGeral,
+            VariacaoMediaConsumoCli = variacaoMediaGeral,
+            TendenciaMediaConsumoCli = tendenciaMediaGeral,
             TopClientesEconomia = topClientesEconomia
         };
     }

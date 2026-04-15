@@ -93,9 +93,7 @@ import { Router } from '@angular/router';
       <td class="px-6 py-5">
         <span
           class="px-3 py-1 text-xs font-medium rounded-full"
-          [ngClass]="cliente.statusContrato?.includes('Ativo')
-            ? 'bg-emerald-500/10 text-emerald-400'
-            : 'bg-red-500/10 text-red-400'">
+[ngClass]="cliente.statusContrato?.includes('Ativo') ?? false\n            ? 'bg-emerald-500/10 text-emerald-400'\n            : 'bg-red-500/10 text-red-400'">
           {{ cliente.statusContrato }}
         </span>
       </td>

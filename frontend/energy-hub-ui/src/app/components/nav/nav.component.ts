@@ -40,6 +40,11 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
             class="px-4 py-2.5 text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all">
             📄 Contratos
           </a>
+          <a routerLink="/consumos" 
+            routerLinkActive="active"
+            class="px-4 py-2.5 text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all">
+            📊 Consumo
+          </a>
           <a routerLink="/login" 
             class="ml-2 px-4 py-2.5 text-sm font-semibold bg-gradient-to-r from-sky-600 to-cyan-600 hover:from-sky-500 hover:to-cyan-500 text-white rounded-lg transition-all shadow-lg hover:shadow-sky-500/30">
             🔑 Login
