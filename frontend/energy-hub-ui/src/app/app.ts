@@ -7,8 +7,12 @@ import { NavComponent } from './components/nav/nav.component';
   selector: 'app-root',
   imports: [RouterOutlet, NavComponent],
   template: `
-    <app-nav />
-    <router-outlet />
+    <div class="eh-app">
+      <app-nav />
+      <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+        <router-outlet />
+      </main>
+    </div>
   `,
   styleUrl: './app.css'
 })

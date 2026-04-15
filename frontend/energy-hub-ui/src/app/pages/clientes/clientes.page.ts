@@ -13,133 +13,135 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   template: `
-    <div class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 py-8 px-4 font-sans">
-      <div class="max-w-6xl mx-auto space-y-6">
-        <!-- Header -->
-        <div class="flex items-center justify-between">
-          <div>
-            <h1 class="font-display text-display-md font-bold text-slate-100">Clientes</h1>
-            <p class="text-slate-400 font-light mt-2">Gerencie seus clientes no mercado livre de energia</p>
-          </div>
-          <button routerLink="/clientes/novo" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-lg hover:shadow-emerald-500/30 transform hover:scale-105">
-            + Novo Cliente
-          </button>
+    <div class="space-y-8">
+      <!-- Header -->
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 class="text-display-md font-mono font-semibold tracking-[-0.03em] text-slate-50">Clientes</h1>
+          <p class="eh-muted mt-2">Gerencie seus clientes no mercado livre de energia.</p>
         </div>
+        <button
+          routerLink="/clientes/novo"
+          class="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500/90 to-teal-500/90 hover:from-emerald-400 hover:to-teal-400 text-white px-5 py-3 font-semibold transition-all duration-300 hover:shadow-[0_18px_60px_-40px_rgba(16,185,129,0.55)] hover:scale-[1.02]"
+        >
+          <span class="text-base">+</span> Novo cliente
+        </button>
+      </div>
 
-        @if (carregando()) {
-          <div class="flex justify-center py-16">
-            <div class="animate-spin rounded-full h-12 w-12 border-4 border-emerald-500/30 border-t-emerald-500"></div>
+      @if (carregando()) {
+        <div class="eh-card p-6">
+          <div class="flex items-center justify-between">
+            <div class="eh-skeleton-title w-40"></div>
+            <div class="eh-skeleton h-9 w-24 rounded-xl"></div>
+          </div>
+          <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            @for (_ of [1,2,3,4,5,6,7,8]; track _) {
+              <div class="eh-skeleton h-10 rounded-xl"></div>
+            }
+          </div>
+        </div>
+      } @else {
+        @if (clientes().length === 0) {
+          <div class="eh-card p-10 text-center border-dashed">
+            <p class="text-sm uppercase tracking-[0.16em] text-slate-400 font-semibold">Vazio</p>
+            <p class="text-lg text-slate-100 font-semibold mt-3">Nenhum cliente cadastrado</p>
+            <p class="text-sm text-slate-500 mt-2">Crie o primeiro cliente para começar a registrar consumos e contratos.</p>
+            <button
+              routerLink="/clientes/novo"
+              class="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500/90 to-teal-500/90 hover:from-emerald-400 hover:to-teal-400 text-white px-6 py-3 font-semibold transition-all duration-300 hover:shadow-[0_18px_60px_-40px_rgba(16,185,129,0.55)]"
+            >
+              Criar primeiro cliente
+            </button>
           </div>
         } @else {
-          @if (clientes().length === 0) {
-            <div class="text-center py-16 bg-gradient-to-br from-slate-800/50 to-slate-900 border-2 border-dashed border-slate-700 rounded-2xl">
-              <p class="text-lg text-slate-400 font-light">📭 Nenhum cliente cadastrado</p>
-              <button routerLink="/clientes/novo" class="mt-6 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-lg hover:shadow-emerald-500/30">
-                Adicionar Primeiro Cliente
-              </button>
+          <div class="eh-card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-950/50 border-b border-slate-800/70">
+                  <tr>
+                    <th class="px-6 py-4 text-left text-[11px] uppercase tracking-[0.16em] text-slate-400 font-semibold">ID</th>
+                    <th class="px-6 py-4 text-left text-[11px] uppercase tracking-[0.16em] text-slate-400 font-semibold">Nome</th>
+                    <th class="px-6 py-4 text-left text-[11px] uppercase tracking-[0.16em] text-slate-400 font-semibold">CNPJ</th>
+                    <th class="px-6 py-4 text-left text-[11px] uppercase tracking-[0.16em] text-slate-400 font-semibold">Consumo</th>
+                    <th class="px-6 py-4 text-left text-[11px] uppercase tracking-[0.16em] text-slate-400 font-semibold">Região</th>
+                    <th class="px-6 py-4 text-left text-[11px] uppercase tracking-[0.16em] text-slate-400 font-semibold">Contrato</th>
+                    <th class="px-6 py-4 text-left text-[11px] uppercase tracking-[0.16em] text-slate-400 font-semibold">Economia</th>
+                    <th class="px-6 py-4 text-right text-[11px] uppercase tracking-[0.16em] text-slate-400 font-semibold">Ações</th>
+                  </tr>
+                </thead>
+
+                <tbody class="divide-y divide-slate-800/70">
+                  @for (cliente of clientes(); track cliente.id) {
+                    <tr class="hover:bg-slate-950/30 transition-all duration-300">
+                      <td class="px-6 py-5 text-slate-500 font-mono text-xs">#{{ cliente.id }}</td>
+
+                      <td class="px-6 py-5 text-slate-50 font-semibold tracking-wide">{{ cliente.nome }}</td>
+
+                      <td class="px-6 py-5 text-slate-400 font-mono text-xs">{{ cliente.cnpj }}</td>
+
+                      <td class="px-6 py-5">
+                        <span class="text-base font-semibold text-amber-200">
+                          {{ cliente.consumoMedio | number:'1.0-0' }} <span class="text-xs font-semibold text-slate-500">MWh</span>
+                        </span>
+                      </td>
+
+                      <td class="px-6 py-5">
+                        <span class="eh-badge eh-badge-neutral">{{ cliente.regiao }}</span>
+                      </td>
+
+                      <td class="px-6 py-5">
+                        <span
+                          class="eh-badge"
+                          [ngClass]="(cliente.statusContrato?.includes('Ativo') ?? false) ? 'eh-badge-success' : 'eh-badge-danger'"
+                        >
+                          {{ cliente.statusContrato }}
+                        </span>
+                      </td>
+
+                      <td class="px-6 py-5">
+                        <span
+                          class="text-lg font-semibold"
+                          [ngClass]="cliente.economiaEstimada >= 0 ? 'text-emerald-200' : 'text-red-200'"
+                        >
+                          R$ {{ cliente.economiaEstimada | number:'1.0-0' }}
+                        </span>
+                      </td>
+
+                      <td class="px-6 py-5 text-right">
+                        <div class="flex justify-end gap-3">
+                          <button
+                            (click)="editar(cliente.id)"
+                            class="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-800/70 bg-slate-950/20 text-slate-200 hover:bg-slate-950/35 hover:border-slate-700/80 transition-all duration-300 hover:-translate-y-0.5"
+                            aria-label="Editar"
+                          >
+                            ✏️
+                          </button>
+
+                          <button
+                            (click)="deletar(cliente.id)"
+                            class="w-9 h-9 flex items-center justify-center rounded-xl border border-red-500/25 bg-red-500/5 text-red-200 hover:bg-red-500/10 transition-all duration-300 hover:-translate-y-0.5"
+                            aria-label="Excluir"
+                          >
+                            🗑️
+                          </button>
+
+                          <a
+                            [routerLink]="['/contratos/novo']"
+                            class="w-9 h-9 flex items-center justify-center rounded-xl border border-emerald-500/25 bg-emerald-500/5 text-emerald-200 hover:bg-emerald-500/10 transition-all duration-300 hover:-translate-y-0.5"
+                            aria-label="Novo contrato"
+                          >
+                            ➕
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
             </div>
-          } @else {
-            <div class="bg-gradient-to-br from-slate-800/50 to-slate-900 border border-slate-700/50 rounded-2xl overflow-hidden hover:border-slate-600 transition-all">
-              <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-
-                  <thead class="bg-slate-950/80 border-b border-slate-700">
-  <tr>
-    <th class="px-6 py-4  text-left text-xs text-slate-400">ID</th>
-    <th class="px-6 py-4 text-left text-xs text-slate-400">Nome</th>
-    <th class="px-6 py-4 text-left text-xs text-slate-400">CNPJ</th>
-    <th class="px-6 py-4 text-left text-xs text-slate-400">Consumo</th>
-    <th class="px-6 py-4 text-left text-xs text-slate-400">Região</th>
-    <th class="px-6 py-4 text-left text-xs text-slate-400">Contrato</th>
-    <th class="px-6 py-4 text-left text-xs text-slate-400">Economia</th>
-    <th class="px-6 py-4 text-right text-xs text-slate-400">Ações</th>
-  </tr>
-</thead>
-
-<tbody class="divide-y divide-slate-700">
-  @for (cliente of clientes(); track cliente.id) {
-    <tr class="hover:bg-slate-800/40 transition-all duration-200">
-
-      <!-- ID -->
-      <td class="px-6 py-5 text-slate-500 font-mono text-xs">
-        #{{ cliente.id }}
-      </td>
-
-      <!-- Nome -->
-      <td class="px-6 py-5 text-slate-100 font-semibold">
-        {{ cliente.nome }}
-      </td>
-
-      <!-- CNPJ -->
-      <td class="px-6 py-5 text-slate-400 font-mono text-xs">
-        {{ cliente.cnpj }}
-      </td>
-
-      <!-- Consumo -->
-      <td class="px-6 py-5">
-        <span class="text-base font-semibold text-amber-400">
-          {{ cliente.consumoMedio | number:'1.0-0' }} MWh
-        </span>
-      </td>
-
-      <!-- Região -->
-      <td class="px-6 py-5">
-        <span class="px-3 py-1 text-xs bg-blue-500/10 text-blue-300 rounded-full">
-          {{ cliente.regiao }}
-        </span>
-      </td>
-
-      <!-- Status -->
-      <td class="px-6 py-5">
-        <span
-          class="px-3 py-1 text-xs font-medium rounded-full"
-[ngClass]="cliente.statusContrato?.includes('Ativo') ?? false\n            ? 'bg-emerald-500/10 text-emerald-400'\n            : 'bg-red-500/10 text-red-400'">
-          {{ cliente.statusContrato }}
-        </span>
-      </td>
-
-      <!-- Economia -->
-      <td class="px-6 py-5">
-        <span
-          class="text-lg font-bold"
-          [ngClass]="cliente.economiaEstimada >= 0
-            ? 'text-emerald-400'
-            : 'text-red-400'">
-          R$ {{ cliente.economiaEstimada | number:'1.0-0' }}
-        </span>
-      </td>
-
-      <!-- Ações -->
-      <td class="px-6 py-5 text-right">
-        <div class="flex justify-end gap-3">
-
-          <button (click)="editar(cliente.id)"
-            class="w-9 h-9 flex items-center justify-center bg-sky-500/10 text-sky-400 hover:bg-sky-500/20 rounded-lg transition">
-            ✏️
-          </button>
-
-          <button (click)="deletar(cliente.id)"
-            class="w-9 h-9 flex items-center justify-center bg-red-500/10 text-red-400 hover:bg-red-500/20 rounded-lg transition">
-            🗑️
-          </button>
-
-          <a [routerLink]="['/contratos/novo']"
-            class="w-9 h-9 flex items-center justify-center bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 rounded-lg transition">
-            ➕
-          </a>
-
-        </div>
-      </td>
-
-    </tr>
-  }
-</tbody>
-                </table>
-              </div>
-            </div>
-          }
+          </div>
         }
-      </div>
+      }
     </div>
   `
 })

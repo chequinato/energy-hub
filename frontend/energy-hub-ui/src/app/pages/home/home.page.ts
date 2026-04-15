@@ -8,104 +8,142 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterLink],
   template: `
-    <div class="min-h-screen bg-gradient-to-br from-slate-950 to-slate-900 text-slate-200 font-sans">
+    <div class="min-h-screen text-slate-100">
 
       <!-- HERO -->
-      <section class="max-w-6xl mx-auto px-6 pt-24 pb-20 text-center space-y-8">
-        <div class="space-y-4">
-          <h1 class="font-display text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-400 to-emerald-400">
-            ⚡ EnergyHub
-          </h1>
-          <p class="text-xl text-slate-300 font-light max-w-3xl mx-auto leading-relaxed">
-            Gerencie com inteligência. Economize com precisão. Controle seu mercado livre de energia.
-          </p>
+      <section class="relative overflow-hidden pt-28 pb-24">
+        <!-- glow background (sem bloco sólido) -->
+        <div class="absolute inset-0 pointer-events-none">
+          <div class="absolute top-[-120px] left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-cyan-500/10 blur-3xl rounded-full"></div>
+          <div class="absolute top-10 left-10 w-[350px] h-[350px] bg-blue-500/10 blur-3xl rounded-full"></div>
+          <div class="absolute top-20 right-10 w-[350px] h-[350px] bg-emerald-500/10 blur-3xl rounded-full"></div>
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-          <a routerLink="/login"
-            class="bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-400 hover:to-cyan-400 text-white px-8 py-4 rounded-lg font-semibold transition-all shadow-lg hover:shadow-sky-500/50 hover:shadow-2xl transform hover:scale-105">
-            🚀 Começar Agora
-          </a>
+        <div class="relative max-w-6xl mx-auto px-6 text-center space-y-8">
+          
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-slate-800/60 bg-slate-900/20 backdrop-blur text-xs">
+            <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+            Plataforma inteligente de energia
+          </div>
 
-          <a routerLink="/dashboard"
-            class="border-2 border-slate-600 hover:border-emerald-500 text-slate-200 hover:text-emerald-400 px-8 py-4 rounded-lg font-semibold transition-all hover:bg-emerald-500/5">
-            📊 Ver Dashboard
-          </a>
+          <h1 class="font-mono text-5xl md:text-6xl font-semibold tracking-tight">
+            EnergyHub
+          </h1>
+
+          <p class="text-slate-300 max-w-2xl mx-auto text-lg leading-relaxed">
+            Monitore consumo, detecte desvios e visualize economia com clareza.
+          </p>
+
+          <div class="flex justify-center gap-4 pt-4 flex-wrap">
+            <a routerLink="/login"
+              class="px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 font-semibold hover:opacity-90 transition">
+              Começar
+            </a>
+
+            <a routerLink="/dashboard"
+              class="px-8 py-4 rounded-xl border border-slate-700/60 bg-slate-900/20 backdrop-blur hover:bg-slate-800/30 transition">
+              Ver dashboard
+            </a>
+          </div>
+
         </div>
       </section>
 
       <!-- FEATURES -->
-      <section class="max-w-6xl mx-auto px-6 py-20 border-t border-slate-800">
-        <h2 class="font-display text-display-sm font-bold text-center mb-16 text-slate-100">Recursos Principais</h2>
+      <section class="border-t border-slate-800/60">
+        <div class="max-w-6xl mx-auto px-6 py-20">
 
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="group bg-gradient-to-br from-slate-800/50 to-slate-900 border border-slate-700 hover:border-sky-500/50 p-8 rounded-2xl transition-all duration-300 hover:shadow-lg hover:shadow-sky-500/20">
-            <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">👥</div>
-            <h3 class="font-display font-semibold text-lg mb-2 text-slate-100">Clientes</h3>
-            <p class="text-sm text-slate-400 leading-relaxed">Gerencie CNPJ, consumo mensal e região de cobertura</p>
+          <div class="text-center max-w-2xl mx-auto mb-16">
+            <h2 class="text-3xl font-semibold tracking-tight text-slate-100">
+              Dados claros. Decisões rápidas.
+            </h2>
+            <p class="text-slate-400 mt-4">
+              Visual limpo e direto pra você entender tudo em segundos.
+            </p>
           </div>
 
-          <div class="group bg-gradient-to-br from-slate-800/50 to-slate-900 border border-slate-700 hover:border-emerald-500/50 p-8 rounded-2xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/20">
-            <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">📄</div>
-            <h3 class="font-display font-semibold text-lg mb-2 text-slate-100">Contratos</h3>
-            <p class="text-sm text-slate-400 leading-relaxed">Vincule fornecedores, tarifas e datas de vigência</p>
-          </div>
+          <div class="grid md:grid-cols-2 gap-6">
 
-          <div class="group bg-gradient-to-br from-slate-800/50 to-slate-900 border border-slate-700 hover:border-amber-500/50 p-8 rounded-2xl transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/20">
-            <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">💡</div>
-            <h3 class="font-display font-semibold text-lg mb-2 text-slate-100">Simulação</h3>
-            <p class="text-sm text-slate-400 leading-relaxed">Calcule economia real com análise comparativa</p>
-          </div>
+            <div class="p-6 rounded-2xl border border-slate-800/60 bg-slate-900/20 backdrop-blur hover:border-cyan-400/40 transition">
+              <div class="flex justify-between">
+                <div>
+                  <p class="text-xs text-slate-400 uppercase">Análise</p>
+                  <h3 class="mt-2 font-mono text-lg">Real vs Estimado</h3>
+                  <p class="text-sm text-slate-400 mt-2">
+                    Compare consumo real com previsão rapidamente.
+                  </p>
+                </div>
+                <span>📊</span>
+              </div>
+            </div>
 
-          <div class="group bg-gradient-to-br from-slate-800/50 to-slate-900 border border-slate-700 hover:border-purple-500/50 p-8 rounded-2xl transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20">
-            <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">📊</div>
-            <h3 class="font-display font-semibold text-lg mb-2 text-slate-100">Dashboard</h3>
-            <p class="text-sm text-slate-400 leading-relaxed">Visualização completa de métricas em tempo real</p>
+            <div class="p-6 rounded-2xl border border-slate-800/60 bg-slate-900/20 backdrop-blur hover:border-emerald-400/40 transition">
+              <div class="flex justify-between">
+                <div>
+                  <p class="text-xs text-slate-400 uppercase">Economia</p>
+                  <h3 class="mt-2 font-mono text-lg">Insights financeiros</h3>
+                  <p class="text-sm text-slate-400 mt-2">
+                    Veja economia gerada pelos contratos.
+                  </p>
+                </div>
+                <span>💰</span>
+              </div>
+            </div>
+
+            <div class="p-6 rounded-2xl border border-slate-800/60 bg-slate-900/20 backdrop-blur hover:border-amber-400/40 transition">
+              <div class="flex justify-between">
+                <div>
+                  <p class="text-xs text-slate-400 uppercase">Alertas</p>
+                  <h3 class="mt-2 font-mono text-lg">Desvios automáticos</h3>
+                  <p class="text-sm text-slate-400 mt-2">
+                    Detecte consumo fora do padrão.
+                  </p>
+                </div>
+                <span>⚠️</span>
+              </div>
+            </div>
+
+            <div class="p-6 rounded-2xl border border-slate-800/60 bg-slate-900/20 backdrop-blur hover:border-blue-400/40 transition">
+              <div class="flex justify-between">
+                <div>
+                  <p class="text-xs text-slate-400 uppercase">Performance</p>
+                  <h3 class="mt-2 font-mono text-lg">Interface fluida</h3>
+                  <p class="text-sm text-slate-400 mt-2">
+                    Experiência rápida e responsiva.
+                  </p>
+                </div>
+                <span>⚡</span>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
 
-      <!-- STACK -->
-      <section class="max-w-6xl mx-auto px-6 py-20">
-        <h2 class="font-display text-display-sm font-bold text-center mb-16 text-slate-100">Tecnologia de Ponta</h2>
+      <!-- CTA -->
+      <section class="border-t border-slate-800/60">
+        <div class="max-w-6xl mx-auto px-6 py-20 text-center space-y-6">
 
-        <div class="grid sm:grid-cols-3 gap-6">
-          <div class="bg-gradient-to-br from-blue-900/40 to-slate-900 border border-blue-700/50 p-8 rounded-2xl text-center hover:border-blue-500 transition-all">
-            <p class="text-blue-300 font-display font-bold text-2xl">.NET 8</p>
-            <p class="text-sm text-slate-400 mt-3">API robusta com Entity Framework Core</p>
-          </div>
+          <h3 class="text-3xl font-semibold">
+            Bora usar de verdade?
+          </h3>
 
-          <div class="bg-gradient-to-br from-purple-900/40 to-slate-900 border border-purple-700/50 p-8 rounded-2xl text-center hover:border-purple-500 transition-all">
-            <p class="text-purple-300 font-display font-bold text-2xl">Angular 18+</p>
-            <p class="text-sm text-slate-400 mt-3">Frontend moderno e responsivo</p>
-          </div>
-
-          <div class="bg-gradient-to-br from-emerald-900/40 to-slate-900 border border-emerald-700/50 p-8 rounded-2xl text-center hover:border-emerald-500 transition-all">
-            <p class="text-emerald-300 font-display font-bold text-2xl">MySQL</p>
-            <p class="text-sm text-slate-400 mt-3">Persistência de dados confiável</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- CTA FINAL -->
-      <section class="bg-gradient-to-r from-sky-600 via-cyan-600 to-emerald-600 py-16 mt-20">
-        <div class="max-w-4xl mx-auto text-center space-y-6 px-6">
-          <h2 class="font-display text-3xl font-bold text-white">Transforme Seu Negócio</h2>
-          <p class="text-white/90 text-lg font-light">
-            Comece agora a gerenciar seus clientes com a plataforma mais inteligente do mercado.
+          <p class="text-slate-400 max-w-xl mx-auto">
+            Crie sua conta e começa a visualizar seus dados agora.
           </p>
 
-          <div class="flex flex-col sm:flex-row gap-4 justify-center pt-6">
+          <div class="flex justify-center gap-4 flex-wrap pt-4">
             <a routerLink="/register"
-              class="bg-white text-slate-900 px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
-              📝 Criar Conta Grátis
+              class="px-8 py-4 rounded-xl bg-white text-slate-900 font-semibold hover:bg-slate-200 transition">
+              Criar conta
             </a>
 
             <a routerLink="/login"
-              class="border-2 border-white text-white hover:bg-white/20 px-8 py-4 rounded-lg font-semibold transition-all">
-              🔐 Já tem Conta?
+              class="px-8 py-4 rounded-xl border border-slate-700/60 hover:bg-slate-800/30 transition">
+              Entrar
             </a>
           </div>
+
         </div>
       </section>
 

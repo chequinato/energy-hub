@@ -10,30 +10,34 @@ import { Cliente } from '../../models/cliente.model';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 py-8 px-4 font-sans">
-      <div class="max-w-6xl mx-auto space-y-6">
-        <!-- Header -->
-        <div class="flex items-center justify-between">
-          <div>
-            <h1 class="font-display text-display-md font-bold text-slate-100">📊 Histórico de Consumo</h1>
-            <p class="text-slate-400 font-light mt-2">Gerenciamento de consumo mensal por cliente</p>
-          </div>
-          <button (click)="abrirFormulario()" class="bg-gradient-to-r from-sky-600 to-cyan-600 hover:from-sky-500 hover:to-cyan-500 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-lg hover:shadow-sky-500/30 transform hover:scale-105">
-            + Novo Consumo
-          </button>
+    <div class="space-y-8">
+      <!-- Header -->
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 class="text-display-md font-mono font-semibold tracking-[-0.03em] text-slate-50">Consumo</h1>
+          <p class="eh-muted mt-2">Gerenciamento de consumo mensal por cliente.</p>
         </div>
+        <button
+          (click)="abrirFormulario()"
+          class="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500/90 to-blue-500/90 hover:from-cyan-400 hover:to-blue-400 text-white px-5 py-3 font-semibold transition-all duration-300 hover:shadow-[0_18px_60px_-40px_rgba(34,211,238,0.55)] hover:scale-[1.02]"
+        >
+          <span class="text-base">+</span> Novo consumo
+        </button>
+      </div>
 
         <!-- Formulário de Novo Consumo -->
         @if (mostrarFormulario()) {
-          <div class="bg-gradient-to-br from-sky-900/30 to-slate-900 border border-sky-700/30 rounded-2xl p-6">
+          <div class="relative">
+            <div class="pointer-events-none absolute -inset-6 rounded-[28px] bg-gradient-to-r from-cyan-500/10 via-blue-500/5 to-emerald-500/10 blur-2xl"></div>
+            <div class="relative eh-card rounded-[28px] p-6">
             <div class="mb-4">
-              <h2 class="text-lg font-semibold text-sky-400">Registrar Novo Consumo</h2>
+              <h2 class="font-brand text-lg font-semibold tracking-wide text-cyan-200">Registrar novo consumo</h2>
             </div>
             <div class="space-y-4">
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label class="block text-xs text-slate-300 mb-2 font-semibold">Cliente</label>
-                  <select [(ngModel)]="novoConsumo.clienteId" class="w-full px-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg text-slate-100 text-sm focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all">
+                  <select [(ngModel)]="novoConsumo.clienteId" class="w-full px-4 py-2.5 bg-slate-950/30 border border-slate-800/70 rounded-xl text-slate-100 text-sm focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all">
                     <option value="">Selecione um cliente</option>
                     @for (cliente of clientes(); track cliente.id) {
                       <option [value]="cliente.id">{{ cliente.nome }}</option>
@@ -44,21 +48,21 @@ import { Cliente } from '../../models/cliente.model';
                 <div>
                   <label class="block text-xs text-slate-300 mb-2 font-semibold">Mês (YYYY-MM)</label>
                   <input [(ngModel)]="novoConsumo.mes" type="text" placeholder="2025-04"
-                         class="w-full px-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg text-slate-100 text-sm focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all placeholder:text-slate-500">
+                         class="w-full px-4 py-2.5 bg-slate-950/30 border border-slate-800/70 rounded-xl text-slate-100 text-sm focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all placeholder:text-slate-500">
                 </div>
 
                 <div>
                   <label class="block text-xs text-slate-300 mb-2 font-semibold">Consumo (MWh)</label>
                   <input [(ngModel)]="novoConsumo.consumoMwh" type="number" step="0.01" placeholder="0.00"
-                         class="w-full px-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg text-slate-100 text-sm focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all placeholder:text-slate-500">
+                         class="w-full px-4 py-2.5 bg-slate-950/30 border border-slate-800/70 rounded-xl text-slate-100 text-sm focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all placeholder:text-slate-500">
                 </div>
               </div>
 
               <div class="flex gap-3 justify-end">
-                <button (click)="cancelar()" class="px-6 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-semibold transition-all">
+                <button (click)="cancelar()" class="px-6 py-2.5 bg-slate-800/70 hover:bg-slate-800 text-white rounded-xl font-semibold transition-all">
                   Cancelar
                 </button>
-                <button (click)="salvar()" class="px-6 py-2.5 bg-gradient-to-r from-sky-600 to-cyan-600 hover:from-sky-500 hover:to-cyan-500 text-white rounded-lg font-semibold transition-all hover:shadow-lg hover:shadow-sky-500/30">
+                <button (click)="salvar()" class="px-6 py-2.5 bg-gradient-to-r from-cyan-500/90 to-blue-500/90 hover:from-cyan-400 hover:to-blue-400 text-white rounded-xl font-semibold transition-all hover:shadow-lg hover:shadow-cyan-500/30">
                   Salvar Consumo
                 </button>
               </div>
@@ -75,25 +79,37 @@ import { Cliente } from '../../models/cliente.model';
                 </div>
               }
             </div>
+            </div>
           </div>
         }
 
         <ng-container *ngIf="carregando(); else lista">
-          <div class="flex justify-center py-16">
-            <div class="animate-spin rounded-full h-12 w-12 border-4 border-sky-500/30 border-t-sky-500"></div>
+          <div class="eh-card p-6">
+            <div class="flex items-center justify-between">
+              <div class="eh-skeleton-title w-44"></div>
+              <div class="eh-skeleton h-9 w-24 rounded-xl"></div>
+            </div>
+            <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              @for (_ of [1,2,3,4,5,6,7,8]; track _) {
+                <div class="eh-skeleton h-10 rounded-xl"></div>
+              }
+            </div>
           </div>
         </ng-container>
 
         <ng-template #lista>
           <!-- Filtro por Cliente -->
-          <div class="bg-slate-800/50 border border-slate-700 rounded-lg p-4">
+          <div class="relative">
+            <div class="pointer-events-none absolute -inset-6 rounded-[28px] bg-gradient-to-r from-slate-500/10 via-cyan-500/5 to-blue-500/10 blur-2xl"></div>
+            <div class="relative eh-card rounded-[28px] p-5">
             <label class="block text-xs text-slate-300 mb-2 font-semibold">Filtrar por Cliente</label>
-            <select [(ngModel)]="clienteFiltro" class="w-full px-4 py-2.5 bg-slate-950 border border-slate-700 rounded-lg text-slate-100 text-sm focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all">
+            <select [(ngModel)]="clienteFiltro" class="w-full px-4 py-2.5 bg-slate-950/30 border border-slate-800/70 rounded-xl text-slate-100 text-sm focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all">
               <option value="">Todos os clientes</option>
               @for (cliente of clientes(); track cliente.id) {
                 <option [value]="cliente.id | number">{{ cliente.nome }}</option>
               }
             </select>
+          </div>
           </div>
 
           <ng-container *ngIf="consumosFiltrados().length === 0; else tabela">
@@ -106,10 +122,12 @@ import { Cliente } from '../../models/cliente.model';
           </ng-container>
 
           <ng-template #tabela>
-            <div class="bg-gradient-to-br from-slate-800/50 to-slate-900 border border-slate-700/50 rounded-2xl overflow-hidden hover:border-slate-600 transition-all">
+            <div class="relative">
+              <div class="pointer-events-none absolute -inset-6 rounded-[28px] bg-gradient-to-r from-cyan-500/10 via-blue-500/5 to-emerald-500/10 blur-2xl"></div>
+              <div class="relative eh-card rounded-[28px] overflow-hidden">
               <div class="overflow-x-auto">
                 <table class="w-full text-sm">
-                  <thead class="bg-slate-950/80 border-b border-slate-700">
+                  <thead class="bg-slate-950/50 border-b border-slate-800/70">
                     <tr>
                       <th class="px-6 py-4 text-left font-semibold text-slate-300 uppercase tracking-wider text-xs">Cliente</th>
                       <th class="px-6 py-4 text-left font-semibold text-slate-300 uppercase tracking-wider text-xs">Mês</th>
@@ -117,9 +135,9 @@ import { Cliente } from '../../models/cliente.model';
                       <th class="px-6 py-4 text-left font-semibold text-slate-300 uppercase tracking-wider text-xs">Ações</th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-slate-700">
+                  <tbody class="divide-y divide-slate-800/70">
                     @for (consumo of consumosFiltrados(); track consumo.id) {
-                      <tr class="hover:bg-slate-700/40 transition-all hover:border-l-4 hover:border-l-sky-500">
+                      <tr class="hover:bg-slate-950/30 transition-all duration-300">
                         <td class="px-6 py-4 text-slate-100 font-medium">
                           {{ getNomeCliente(consumo.clienteId) }}
                         </td>
@@ -143,9 +161,9 @@ import { Cliente } from '../../models/cliente.model';
                 </table>
               </div>
             </div>
+            </div>
           </ng-template>
         </ng-template>
-      </div>
     </div>
   `,
   styles: []

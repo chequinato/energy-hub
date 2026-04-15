@@ -9,69 +9,86 @@ import { Contrato } from '../../models/contrato.model';
   standalone: true,
   imports: [CommonModule, RouterLink],
   template: `
-    <div class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 py-8 px-4 font-sans">
-      <div class="max-w-6xl mx-auto space-y-6">
-        <!-- Header -->
-        <div class="flex items-center justify-between">
-          <div>
-            <h1 class="font-display text-display-md font-bold text-slate-100">Contratos</h1>
-            <p class="text-slate-400 font-light mt-2">Gerenciamento de contratos de energia</p>
-          </div>
-          <button routerLink="/contratos/novo" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-lg hover:shadow-emerald-500/30 transform hover:scale-105">
-            + Novo Contrato
-          </button>
+    <div class="space-y-8">
+      <!-- Header -->
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 class="text-display-md font-mono font-semibold tracking-[-0.03em] text-slate-50">Contratos</h1>
+          <p class="eh-muted mt-2">Gerenciamento de contratos de energia.</p>
         </div>
+        <button
+          routerLink="/contratos/novo"
+          class="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500/90 to-teal-500/90 hover:from-emerald-400 hover:to-teal-400 text-white px-5 py-3 font-semibold transition-all duration-300 hover:shadow-[0_18px_60px_-40px_rgba(16,185,129,0.55)] hover:scale-[1.02]"
+        >
+          <span class="text-base">+</span> Novo contrato
+        </button>
+      </div>
 
-        <ng-container *ngIf="carregando(); else lista">
-          <div class="flex justify-center py-16">
-            <div class="animate-spin rounded-full h-12 w-12 border-4 border-emerald-500/30 border-t-emerald-500"></div>
+      <ng-container *ngIf="carregando(); else lista">
+        <div class="eh-card p-6">
+          <div class="flex items-center justify-between">
+            <div class="eh-skeleton-title w-40"></div>
+            <div class="eh-skeleton h-9 w-24 rounded-xl"></div>
+          </div>
+          <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div class="eh-skeleton h-10 rounded-xl"></div>
+            <div class="eh-skeleton h-10 rounded-xl"></div>
+            <div class="eh-skeleton h-10 rounded-xl"></div>
+            <div class="eh-skeleton h-10 rounded-xl"></div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #lista>
+        <ng-container *ngIf="contratos().length === 0; else tabela">
+          <div class="eh-card p-10 text-center border-dashed">
+            <p class="text-sm uppercase tracking-[0.16em] text-slate-400 font-semibold">Vazio</p>
+            <p class="text-lg text-slate-100 font-semibold mt-3">Nenhum contrato cadastrado</p>
+            <p class="text-sm text-slate-500 mt-2">Crie o primeiro contrato para vincular clientes e tarifas.</p>
+            <button
+              routerLink="/contratos/novo"
+              class="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500/90 to-teal-500/90 hover:from-emerald-400 hover:to-teal-400 text-white px-6 py-3 font-semibold transition-all duration-300 hover:shadow-[0_18px_60px_-40px_rgba(16,185,129,0.55)]"
+            >
+              Criar primeiro contrato
+            </button>
           </div>
         </ng-container>
-        <ng-template #lista>
-          <ng-container *ngIf="contratos().length === 0; else tabela">
-            <div class="text-center py-16 bg-gradient-to-br from-slate-800/50 to-slate-900 border-2 border-dashed border-slate-700 rounded-2xl">
-              <p class="text-lg text-slate-400 font-light">📭 Nenhum contrato cadastrado</p>
-              <button routerLink="/contratos/novo" class="mt-6 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-lg hover:shadow-emerald-500/30">
-                Adicionar Primeiro Contrato
-              </button>
-            </div>
-          </ng-container>
-          <ng-template #tabela>
-            <div class="bg-gradient-to-br from-slate-800/50 to-slate-900 border border-slate-700/50 rounded-2xl overflow-hidden hover:border-slate-600 transition-all">
+
+        <ng-template #tabela>
+          <!-- Box com bordas arredondadas + glow atrás -->
+          <div class="relative">
+            <div class="pointer-events-none absolute -inset-6 rounded-[28px] bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-cyan-500/10 blur-2xl"></div>
+            <div class="relative eh-card rounded-[28px] overflow-hidden">
               <div class="overflow-x-auto">
                 <table class="w-full text-sm">
-                  <thead class="bg-slate-950/80 border-b border-slate-700">
+                  <thead class="bg-slate-950/50 border-b border-slate-800/70">
                     <tr>
-                      <th class="px-6 py-4 text-left font-semibold text-slate-300 uppercase tracking-wider text-xs">Fornecedor</th>
-                      <th class="px-6 py-4 text-left font-semibold text-slate-300 uppercase tracking-wider text-xs">Cliente ID</th>
-                      <th class="px-6 py-4 text-left font-semibold text-slate-300 uppercase tracking-wider text-xs">Preço/MWh</th>
-                      <th class="px-6 py-4 text-left font-semibold text-slate-300 uppercase tracking-wider text-xs">Início</th>
-                      <th class="px-6 py-4 text-left font-semibold text-slate-300 uppercase tracking-wider text-xs">Fim</th>
+                      <th class="px-6 py-4 text-left text-[11px] uppercase tracking-[0.16em] text-slate-400 font-semibold">Fornecedor</th>
+                      <th class="px-6 py-4 text-left text-[11px] uppercase tracking-[0.16em] text-slate-400 font-semibold">Cliente ID</th>
+                      <th class="px-6 py-4 text-left text-[11px] uppercase tracking-[0.16em] text-slate-400 font-semibold">Preço/MWh</th>
+                      <th class="px-6 py-4 text-left text-[11px] uppercase tracking-[0.16em] text-slate-400 font-semibold">Início</th>
+                      <th class="px-6 py-4 text-left text-[11px] uppercase tracking-[0.16em] text-slate-400 font-semibold">Fim</th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-slate-700">
-                    <tr *ngFor="let contrato of contratos()" class="hover:bg-slate-700/40 transition-all hover:border-l-4 hover:border-l-emerald-500">
-                      <td class="px-6 py-4 text-slate-100 font-medium">{{ contrato.fornecedor }}</td>
+                  <tbody class="divide-y divide-slate-800/70">
+                    <tr *ngFor="let contrato of contratos()" class="hover:bg-slate-950/30 transition-all duration-300">
+                      <td class="px-6 py-4 text-slate-50 font-semibold tracking-wide">{{ contrato.fornecedor }}</td>
                       <td class="px-6 py-4 text-slate-400">
-                        <span class="px-2.5 py-1 text-xs font-mono bg-slate-700/40 text-slate-300 rounded">{{ contrato.clienteId }}</span>
+                        <span class="eh-badge eh-badge-neutral font-mono">{{ contrato.clienteId }}</span>
                       </td>
                       <td class="px-6 py-4">
-                        <span class="font-bold bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">R$ {{ contrato.precoMwh | number:'1.2-2' }}</span>
+                        <span class="font-semibold text-amber-200">R$ {{ contrato.precoMwh | number:'1.2-2' }}</span>
                       </td>
-                      <td class="px-6 py-4 text-slate-400 text-sm">
-                        📅 {{ contrato.dataInicio | date:'dd/MM/yyyy' }}
-                      </td>
-                      <td class="px-6 py-4 text-slate-400 text-sm">
-                        📅 {{ contrato.dataFim | date:'dd/MM/yyyy' }}
-                      </td>
+                      <td class="px-6 py-4 text-slate-400 text-sm">{{ contrato.dataInicio | date:'dd/MM/yyyy' }}</td>
+                      <td class="px-6 py-4 text-slate-400 text-sm">{{ contrato.dataFim | date:'dd/MM/yyyy' }}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
-          </ng-template>
+          </div>
         </ng-template>
-      </div>
+      </ng-template>
     </div>
   `
 })

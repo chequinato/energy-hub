@@ -10,17 +10,22 @@ import { CreateContrato } from '../../models/contrato.model';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   template: `
-    <div class="min-h-screen flex items-center justify-center bg-slate-900 p-6">
-  <form (ngSubmit)="salvar()" class="bg-slate-800 p-6 rounded-xl w-full max-w-md space-y-5">
+    <div class="min-h-screen flex items-center justify-center py-12 px-4">
+      <div class="relative w-full max-w-md">
+        <div class="pointer-events-none absolute -inset-6 rounded-[28px] bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-cyan-500/10 blur-2xl"></div>
+        <form (ngSubmit)="salvar()" class="relative eh-card rounded-[28px] p-8 space-y-5">
 
-    <h2 class="text-xl text-white font-bold">Novo Contrato</h2>
+    <div class="text-center space-y-2">
+      <h2 class="font-brand text-2xl font-semibold tracking-[-0.01em] text-slate-100">Novo contrato</h2>
+      <p class="text-sm text-slate-400">Crie um contrato vinculando cliente, fornecedor e vigência.</p>
+    </div>
 
     <!-- Fornecedor -->
     <div>
       <label class="text-sm text-slate-400">Fornecedor de energia</label>
       <input [(ngModel)]="form.fornecedor" name="fornecedor"
         placeholder="Ex: EDP, Neoenergia, Engie..."
-        class="w-full mt-1 p-2 rounded bg-slate-700 text-white"
+        class="w-full mt-2 px-4 py-3 rounded-xl bg-slate-950/30 border border-slate-800/70 text-slate-100 focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all"
         required />
     </div>
 
@@ -30,7 +35,7 @@ import { CreateContrato } from '../../models/contrato.model';
       <input [(ngModel)]="form.clienteId" name="clienteId"
         type="number"
         placeholder="Ex: 1"
-        class="w-full mt-1 p-2 rounded bg-slate-700 text-white"
+        class="w-full mt-2 px-4 py-3 rounded-xl bg-slate-950/30 border border-slate-800/70 text-slate-100 focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all"
         required />
       <p class="text-xs text-slate-500 mt-1">Use o ID de um cliente já cadastrado</p>
     </div>
@@ -41,7 +46,7 @@ import { CreateContrato } from '../../models/contrato.model';
       <input [(ngModel)]="form.precoMwh" name="precoMwh"
         type="number"
         placeholder="Ex: 250.50"
-        class="w-full mt-1 p-2 rounded bg-slate-700 text-white"
+        class="w-full mt-2 px-4 py-3 rounded-xl bg-slate-950/30 border border-slate-800/70 text-slate-100 focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all"
         required />
     </div>
 
@@ -51,7 +56,7 @@ import { CreateContrato } from '../../models/contrato.model';
         <label class="text-sm text-slate-400">Data início</label>
         <input [(ngModel)]="form.dataInicio" name="dataInicio"
           type="date"
-          class="w-full mt-1 p-2 rounded bg-slate-700 text-white"
+          class="w-full mt-2 px-4 py-3 rounded-xl bg-slate-950/30 border border-slate-800/70 text-slate-100 focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all"
           required />
       </div>
 
@@ -59,14 +64,14 @@ import { CreateContrato } from '../../models/contrato.model';
         <label class="text-sm text-slate-400">Data fim</label>
         <input [(ngModel)]="form.dataFim" name="dataFim"
           type="date"
-          class="w-full mt-1 p-2 rounded bg-slate-700 text-white"
+          class="w-full mt-2 px-4 py-3 rounded-xl bg-slate-950/30 border border-slate-800/70 text-slate-100 focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all"
           required />
       </div>
     </div>
 
     <!-- Botão -->
     <button type="submit"
-      class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded font-semibold">
+      class="w-full rounded-xl bg-gradient-to-r from-emerald-500/90 to-teal-500/90 hover:from-emerald-400 hover:to-teal-400 text-white py-3 font-semibold transition-all duration-300 hover:shadow-[0_18px_60px_-40px_rgba(16,185,129,0.55)] hover:scale-[1.01]">
       Salvar contrato
     </button>
 
@@ -76,7 +81,8 @@ import { CreateContrato } from '../../models/contrato.model';
     </a>
 
   </form>
-</div>
+      </div>
+    </div>
   `
 })
 

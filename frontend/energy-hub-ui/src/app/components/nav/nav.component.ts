@@ -7,61 +7,103 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive],
   template: `
-    <nav class="sticky top-0 z-50 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/50 backdrop-blur-xl shadow-2xl">
-      <div class="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center font-sans">
-        <!-- Logo -->
-        <a routerLink="/" class="flex items-center gap-2 hover:opacity-90 transition-opacity group">
-          <span class="text-3xl text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-400 to-emerald-400">⚡</span>
-        <span class="text-2xl md:text-3xl font-display font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-400 to-emerald-400 group-hover:scale-105 transition-all">
-            EnergyHub
-        </span>
-        </a>
+    <nav class="sticky top-0 z-50">
+      <div class="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-slate-950/70 to-transparent"></div>
 
-        <!-- Desktop Navigation -->
-        <div class="hidden md:flex items-center gap-1">
-          <a routerLink="/" 
-            routerLinkActive="active" 
-            [routerLinkActiveOptions]="{ exact: true }"
-            class="px-4 py-2.5 text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all">
-            🏠 Início
-          </a>
-          <a routerLink="/dashboard" 
-            routerLinkActive="active"
-            class="px-4 py-2.5 text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all">
-            📊 Dashboard
-          </a>
-          <a routerLink="/clientes" 
-            routerLinkActive="active"
-            class="px-4 py-2.5 text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all">
-            👥 Clientes
-          </a>
-          <a routerLink="/contratos" 
-            routerLinkActive="active"
-            class="px-4 py-2.5 text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all">
-            📄 Contratos
-          </a>
-          <a routerLink="/consumos" 
-            routerLinkActive="active"
-            class="px-4 py-2.5 text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all">
-            📊 Consumo
-          </a>
-          <a routerLink="/login" 
-            class="ml-2 px-4 py-2.5 text-sm font-semibold bg-gradient-to-r from-sky-600 to-cyan-600 hover:from-sky-500 hover:to-cyan-500 text-white rounded-lg transition-all shadow-lg hover:shadow-sky-500/30">
-            🔑 Login
-          </a>
-        </div>
+      <div class="px-4 sm:px-6 lg:px-8 pt-3">
+        <div class="pointer-events-auto mx-auto max-w-7xl">
+          <div class="flex items-center justify-between rounded-2xl border border-slate-800/70 bg-slate-950/40 backdrop-blur-xl shadow-[0_16px_60px_-40px_rgba(34,211,238,0.25)] ring-1 ring-white/5 px-4 sm:px-5 py-3">
+            <!-- Brand -->
+            <a routerLink="/home" class="flex items-center gap-3 group">
+              <span class="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-cyan-400/20 to-blue-500/10 border border-cyan-400/20 text-cyan-200 shadow-[0_10px_30px_-18px_rgba(34,211,238,0.55)]">
+                ⚡
+              </span>
+              <div class="leading-tight">
+                <div class="text-[13px] uppercase tracking-[0.20em] text-slate-400 font-semibold">EnergyHub</div>
+                <div class="text-sm text-slate-200 font-semibold tracking-wide">Gestão inteligente</div>
+              </div>
+            </a>
 
-        <!-- Mobile Menu Button -->
-        <div class="md:hidden">
-          <button class="text-2xl text-slate-400 hover:text-white transition-colors">☰</button>
+            <!-- Links (desktop) -->
+            <div class="hidden md:flex items-center gap-1">
+              <a
+                routerLink="/dashboard"
+                routerLinkActive="active"
+                class="eh-navlink"
+              >Dashboard</a>
+              <a
+                routerLink="/clientes"
+                routerLinkActive="active"
+                class="eh-navlink"
+              >Clientes</a>
+              <a
+                routerLink="/consumos"
+                routerLinkActive="active"
+                class="eh-navlink"
+              >Consumo</a>
+              <a
+                routerLink="/contratos"
+                routerLinkActive="active"
+                class="eh-navlink"
+              >Contratos</a>
+            </div>
+
+            <!-- Right side -->
+            <div class="flex items-center gap-2 sm:gap-3">
+              <a
+                routerLink="/login"
+                class="hidden sm:inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500/90 to-blue-500/90 hover:from-cyan-400 hover:to-blue-400 text-white px-4 py-2 text-sm font-semibold shadow-[0_16px_40px_-30px_rgba(34,211,238,0.75)] transition-all duration-300 hover:shadow-[0_18px_50px_-30px_rgba(59,130,246,0.80)]"
+              >
+                Entrar
+              </a>
+
+              <div class="h-9 w-[1px] bg-slate-800/70 hidden sm:block"></div>
+
+              <!-- Avatar placeholder -->
+              <button
+                type="button"
+                class="group grid h-9 w-9 place-items-center rounded-xl border border-slate-800/80 bg-slate-900/40 hover:bg-slate-900/60 ring-1 ring-white/5 transition-all duration-300 hover:shadow-[0_18px_60px_-40px_rgba(148,163,184,0.25)]"
+                aria-label="Usuário"
+              >
+                <span class="text-sm font-semibold text-slate-200">MH</span>
+              </button>
+
+              <!-- Mobile -->
+              <a
+                routerLink="/login"
+                class="sm:hidden inline-flex items-center justify-center rounded-xl border border-slate-800/80 bg-slate-900/40 px-3 py-2 text-sm font-semibold text-slate-100 hover:bg-slate-900/60 transition-all"
+              >
+                Entrar
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </nav>
   `,
   styles: [`
-    :host a.router-link-active {
-      background-color: rgba(30 41 59 / 0.7);
+    :host .eh-navlink {
+      border-radius: 0.9rem;
+      padding: 0.6rem 0.9rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: rgba(226, 232, 240, 0.78);
+      transition: all 300ms ease;
+      position: relative;
+    }
+
+    :host .eh-navlink:hover {
+      background: rgba(15, 23, 42, 0.35);
       color: white;
+      box-shadow: 0 18px 60px -45px rgba(34, 211, 238, 0.30);
+      transform: translateY(-1px);
+    }
+
+    :host a.router-link-active {
+      background: rgba(15, 23, 42, 0.55);
+      color: white;
+      box-shadow: 0 18px 60px -45px rgba(34, 211, 238, 0.35);
+      border: 1px solid rgba(148, 163, 184, 0.16);
     }
   `]
 })
