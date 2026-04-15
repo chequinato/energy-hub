@@ -154,7 +154,7 @@ import { Dashboard } from '../../models/dashboard.model';
               </div>
             } @else {
               <ul class="space-y-3" *ngIf="ultimosClientes.length; else semClientes">
-                <li *ngFor="let c of ultimosClientes; track c.id" class="p-4 bg-slate-900/50 border border-slate-700/30 rounded-lg hover:border-sky-500/40 transition-all hover:bg-slate-800/50">
+                <li *ngFor="let c of ultimosClientes; trackBy: trackById" class="p-4 bg-slate-900/50 border border-slate-700/30 rounded-lg hover:border-sky-500/40 transition-all hover:bg-slate-800/50">
                   <div class="flex items-center justify-between">
                     <div>
                       <p class="text-slate-100 font-semibold">{{ c.nome }}</p>
@@ -180,7 +180,7 @@ import { Dashboard } from '../../models/dashboard.model';
 
           @if (dashboard()?.topClientesEconomia?.length) {
             <ul class="space-y-3">
-              @for (cliente of dashboard()?.topClientesEconomia; track cliente.clienteId; let i = $index) {
+              @for (cliente of dashboard()?.topClientesEconomia ?? []; track cliente?.clienteId; let i = $index) {
                 <li class="flex flex-col md:flex-row md:items-start md:justify-between p-4 bg-slate-900/50 border border-slate-700/30 rounded-lg hover:border-emerald-500/40 transition-all">
                   <div class="flex-1">
                     <p class="text-slate-100 font-semibold">#{{ i + 1 }} {{ cliente.nomeCliente }}</p>
@@ -237,6 +237,10 @@ export class DashboardPage {
     this.loadClientes();
   }
 
+  trackById(index: number, item: ClienteDetail) {
+    return item?.id ?? index;
+  }
+
   loadDashboard() {
     this.carregandoDashboard.set(true);
     this.erroDashboard.set('');
@@ -259,7 +263,9 @@ export class DashboardPage {
       next: (data: ClienteDetail[]) => {
         const sorted = data.sort((a, b) => b.id - a.id);
         this.clientes.set(sorted);
-        this.ultimosClientes = sorted.slice(0, 5);
+        this.ultimosClientes = sorted
+          .filter(c => c && c.id) // 🔥 proteção
+          .slice(0, 5);
         this.clientesComContratoAtivo = sorted.filter(c => c.contratoAtivo != null);
         this.carregandoClientes.set(false);
       },
