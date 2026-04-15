@@ -1,15 +1,34 @@
 @import "tailwindcss";
 
+/* =========================
+   BASE GLOBAL (UNIFICADO)
+========================= */
 @layer base {
-  html {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
-    background: #0b1220;
-    color-scheme: dark;
-    @apply antialiased;
-  }
-
+  html,
   body {
-    @apply bg-slate-950 text-slate-100 font-sans;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    background: #06131a;
+    color: #e2e8f0;
+
+    color-scheme: dark;
+
+    font-family: 'Inter',
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      Helvetica,
+      Arial,
+      ui-sans-serif,
+      system-ui,
+      sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -18,10 +37,10 @@
 
   :focus-visible {
     outline: none;
-    @apply ring-2 ring-cyan-400/70 ring-offset-2 ring-offset-slate-950;
+    @apply ring-2 ring-cyan-400/70 ring-offset-2 ring-offset-[#06131a];
   }
 
-  /* Custom Scrollbar */
+  /* Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -41,22 +60,38 @@
   }
 }
 
-/* Global layout surface */
+/* =========================
+   APP BACKGROUND PREMIUM
+========================= */
 .eh-app {
-  @apply min-h-screen bg-[radial-gradient(1000px_circle_at_10%_0%,rgba(34,211,238,0.10),transparent_55%),radial-gradient(900px_circle_at_90%_10%,rgba(59,130,246,0.10),transparent_55%),linear-gradient(to_bottom_right,#020617,#0b1220)];
+  @apply min-h-screen w-full;
+
+  background:
+    radial-gradient(1000px circle at 10% 0%, rgba(34,211,238,0.10), transparent 55%),
+    radial-gradient(900px circle at 90% 10%, rgba(59,130,246,0.10), transparent 55%),
+    linear-gradient(to bottom right, #020617, #06131a);
 }
 
-/* Premium card system */
+/* =========================
+   CARDS
+========================= */
 .eh-card {
   @apply rounded-2xl border border-slate-800/70 bg-slate-900/35 backdrop-blur-xl shadow-[0_12px_40px_-24px_rgba(0,0,0,0.75)] ring-1 ring-white/5;
 }
 
 .eh-card-hover {
-  @apply transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.01] hover:border-slate-700/80 hover:shadow-[0_20px_60px_-30px_rgba(34,211,238,0.22)];
+  @apply transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.01]
+  hover:border-slate-700/80 hover:shadow-[0_20px_60px_-30px_rgba(34,211,238,0.22)];
 }
 
+/* =========================
+   KPI BOX
+========================= */
 .eh-kpi {
-  @apply rounded-2xl border border-slate-800/70 bg-slate-900/35 backdrop-blur-xl shadow-[0_12px_40px_-24px_rgba(0,0,0,0.75)] ring-1 ring-white/5 p-6 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.01] hover:border-slate-700/80 hover:shadow-[0_20px_60px_-30px_rgba(34,211,238,0.22)];
+  @apply rounded-2xl border border-slate-800/70 bg-slate-900/35 backdrop-blur-xl
+  shadow-[0_12px_40px_-24px_rgba(0,0,0,0.75)] ring-1 ring-white/5 p-6
+  transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.01]
+  hover:border-slate-700/80 hover:shadow-[0_20px_60px_-30px_rgba(34,211,238,0.22)];
 }
 
 .eh-kpi-label {
@@ -67,6 +102,9 @@
   @apply mt-3 text-3xl md:text-4xl font-semibold text-slate-50;
 }
 
+/* =========================
+   TEXT UTILITIES
+========================= */
 .eh-section-title {
   @apply text-sm uppercase tracking-[0.16em] font-semibold text-slate-300;
 }
@@ -75,35 +113,49 @@
   @apply text-slate-400 font-normal leading-relaxed;
 }
 
-/* Badges */
+/* =========================
+   BADGES
+========================= */
 .eh-badge {
   @apply inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-semibold;
 }
+
 .eh-badge-neutral { @apply border-slate-700/70 bg-slate-800/40 text-slate-200; }
 .eh-badge-success { @apply border-emerald-500/30 bg-emerald-500/10 text-emerald-300; }
 .eh-badge-warning { @apply border-amber-500/30 bg-amber-500/10 text-amber-300; }
-.eh-badge-danger { @apply border-red-500/30 bg-red-500/10 text-red-300; }
+.eh-badge-danger  { @apply border-red-500/30 bg-red-500/10 text-red-300; }
 
-/* Skeleton loader */
-.eh-skeleton {
+/* =========================
+   SKELETON
+========================= */
+.eh-skeleton,
+.eh-skeleton-line,
+.eh-skeleton-title {
   @apply animate-pulse rounded-xl bg-slate-800/60 ring-1 ring-white/5;
 }
+
 .eh-skeleton-line {
-  @apply animate-pulse rounded-xl bg-slate-800/60 ring-1 ring-white/5 h-3;
-}
-.eh-skeleton-title {
-  @apply animate-pulse rounded-xl bg-slate-800/60 ring-1 ring-white/5 h-5;
+  @apply h-3;
 }
 
-/* Progress bar */
+.eh-skeleton-title {
+  @apply h-5;
+}
+
+/* =========================
+   PROGRESS
+========================= */
 .eh-progress {
   @apply h-2 w-full overflow-hidden rounded-full bg-slate-800/70 ring-1 ring-white/5;
 }
+
 .eh-progress-bar {
   @apply h-full rounded-full bg-gradient-to-r from-cyan-400 to-blue-500;
 }
 
-/* Gradient text utility */
+/* =========================
+   GRADIENT TEXT
+========================= */
 .gradient-text {
   background: linear-gradient(90deg, #fb923c 0%, #a78bfa 100%);
   -webkit-background-clip: text;
