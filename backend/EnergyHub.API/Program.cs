@@ -70,6 +70,11 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5243);
+});
+
 var app = builder.Build();
 
 // Pipeline

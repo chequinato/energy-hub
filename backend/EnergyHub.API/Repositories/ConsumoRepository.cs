@@ -22,11 +22,28 @@ public class ConsumoRepository : IConsumoRepository
             .ToListAsync();
     }
 
+    public async Task<List<Consumo>> GetAllAsync(int userId)
+    {
+        return await _context.Consumos
+            .Where(c => c.UsuarioId == userId)
+            .Include(c => c.Cliente)
+            .OrderByDescending(c => c.Mes)
+            .ToListAsync();
+    }
+
     public async Task<Consumo?> GetByIdAsync(int id)
     {
         return await _context.Consumos
             .Include(c => c.Cliente)
             .FirstOrDefaultAsync(c => c.Id == id);
+    }
+
+    public async Task<Consumo?> GetByIdAsync(int id, int userId)
+    {
+        return await _context.Consumos
+            .Where(c => c.Id == id && c.UsuarioId == userId)
+            .Include(c => c.Cliente)
+            .FirstOrDefaultAsync();
     }
 
     public async Task<List<Consumo>> GetByClienteIdAsync(int clienteId)
@@ -54,7 +71,8 @@ public class ConsumoRepository : IConsumoRepository
         {
             ClienteId = dto.ClienteId,
             Mes = dto.Mes,
-            ConsumoMwh = dto.ConsumoMwh
+            ConsumoMwh = dto.ConsumoMwh,
+            UsuarioId = dto.UsuarioId
         };
 
         _context.Consumos.Add(consumo);
@@ -80,6 +98,18 @@ public class ConsumoRepository : IConsumoRepository
     public async Task<bool> DeleteAsync(int id)
     {
         var consumo = await _context.Consumos.FindAsync(id);
+        if (consumo == null) return false;
+
+        _context.Consumos.Remove(consumo);
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<bool> DeleteAsync(int id, int userId)
+    {
+        var consumo = await _context.Consumos
+            .FirstOrDefaultAsync(c => c.Id == id && c.UsuarioId == userId);
         if (consumo == null) return false;
 
         _context.Consumos.Remove(consumo);

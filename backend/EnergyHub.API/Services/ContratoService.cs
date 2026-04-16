@@ -37,6 +37,12 @@ public class ContratoService : IContratoService
         return contratos.Select(MapToDto).ToList();
     }
 
+    public async Task<List<ContratoDto>> GetAllAsync(int userId)
+    {
+        var contratos = await _repository.GetAllAsync(userId);
+        return contratos.Select(MapToDto).ToList();
+    }
+
     public async Task<List<ContratoDto>> GetByClienteIdAsync(int clienteId)
     {
         var contratos = await _repository.GetByClienteIdAsync(clienteId);
@@ -49,10 +55,16 @@ public class ContratoService : IContratoService
         return contrato == null ? null : MapToDto(contrato);
     }
 
+    public async Task<ContratoDto?> GetByIdAsync(int id, int userId)
+    {
+        var contrato = await _repository.GetByIdAsync(id, userId);
+        return contrato == null ? null : MapToDto(contrato);
+    }
+
     public async Task<ContratoDto> CreateAsync(CreateContratoDto dto)
     {
         // Validação: Cliente deve existir
-        var clienteExiste = await _clienteRepository.ExistsAsync(dto.ClienteId);
+        var clienteExiste = await _clienteRepository.ExistsAsync(dto.ClienteId, dto.UsuarioId);
         if (!clienteExiste)
         {
             throw new ArgumentException($"Cliente com ID {dto.ClienteId} não encontrado");
@@ -71,6 +83,11 @@ public class ContratoService : IContratoService
     public async Task<bool> DeleteAsync(int id)
     {
         return await _repository.DeleteAsync(id);
+    }
+
+    public async Task<bool> DeleteAsync(int id, int userId)
+    {
+        return await _repository.DeleteAsync(id, userId);
     }
 }
 

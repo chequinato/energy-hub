@@ -6,7 +6,7 @@ namespace EnergyHub.API.Services;
 
 public interface IDashboardService
 {
-    Task<DashboardDto> GetDashboardAsync();
+    Task<DashboardDto> GetDashboardAsync(int userId);
 }
 
 public class DashboardService : IDashboardService
@@ -25,10 +25,10 @@ public class DashboardService : IDashboardService
         _consumoService = consumoService;
     }
 
-    public async Task<DashboardDto> GetDashboardAsync()
+    public async Task<DashboardDto> GetDashboardAsync(int userId)
     {
-        var clientes = await _clienteRepository.GetAllAsync();
-        var contratos = await _contratoRepository.GetAllAsync();
+        var clientes = await _clienteRepository.GetAllAsync(userId);
+        var contratos = await _contratoRepository.GetAllAsync(userId);
 
         // Contar contratos por status
         var contratosAtivos = contratos.Count(c => ContratoStatusHelper.GetStatus(c.DataInicio, c.DataFim) == ContratoStatus.Ativo);

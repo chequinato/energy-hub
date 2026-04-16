@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using EnergyHub.API.DTOs;
 using EnergyHub.API.Services;
+using System.Security.Claims;
 
 namespace EnergyHub.API.Controllers;
 
@@ -17,10 +18,21 @@ public class ContratosController : ControllerBase
         _contratoService = contratoService;
     }
 
+    private int GetUserId()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+            throw new UnauthorizedAccessException("Token inválido");
+
+        return int.Parse(userIdClaim);
+    }
+
     [HttpGet]
     public async Task<ActionResult<List<ContratoDto>>> GetContratos()
     {
-        var contratos = await _contratoService.GetAllAsync();
+        var userId = GetUserId();
+        var contratos = await _contratoService.GetAllAsync(userId);
         return Ok(contratos);
     }
 
@@ -34,7 +46,8 @@ public class ContratosController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<ContratoDto>> GetContrato(int id)
     {
-        var contrato = await _contratoService.GetByIdAsync(id);
+        var userId = GetUserId();
+        var contrato = await _contratoService.GetByIdAsync(id, userId);
         if (contrato == null)
         {
             return NotFound();
@@ -45,6 +58,8 @@ public class ContratosController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ContratoDto>> CreateContrato(CreateContratoDto dto)
     {
+        var userId = GetUserId();
+        dto.UsuarioId = userId;
         var contrato = await _contratoService.CreateAsync(dto);
         return CreatedAtAction(nameof(GetContrato), new { id = contrato.Id }, contrato);
     }
@@ -63,7 +78,8 @@ public class ContratosController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteContrato(int id)
     {
-        var success = await _contratoService.DeleteAsync(id);
+        var userId = GetUserId();
+        var success = await _contratoService.DeleteAsync(id, userId);
         if (!success)
         {
             return NotFound();

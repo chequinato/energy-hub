@@ -14,6 +14,14 @@ public class ClienteRepository : IClienteRepository
         _context = context;
     }
 
+    public async Task<List<Cliente>> GetAllAsync()
+    {
+        return await _context.Clientes
+            .Include(c => c.Contratos)
+            .Include(c => c.Consumos)
+            .ToListAsync();
+    }
+
     public async Task<List<Cliente>> GetAllAsync(int userId)
     {
         return await _context.Clientes
@@ -23,6 +31,15 @@ public class ClienteRepository : IClienteRepository
             .ToListAsync();
     }
 
+    public async Task<Cliente?> GetByIdAsync(int id)
+    {
+        return await _context.Clientes
+            .Where(c => c.Id == id)
+            .Include(c => c.Contratos)
+            .Include(c => c.Consumos)
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<Cliente?> GetByIdAsync(int id, int userId)
     {
         return await _context.Clientes
@@ -30,6 +47,12 @@ public class ClienteRepository : IClienteRepository
             .Include(c => c.Contratos)
             .Include(c => c.Consumos)
             .FirstOrDefaultAsync();
+    }
+
+    public async Task<bool> ExistsAsync(int id)
+    {
+        return await _context.Clientes
+            .AnyAsync(c => c.Id == id);
     }
 
     public async Task<bool> ExistsAsync(int id, int userId)
@@ -69,6 +92,16 @@ public class ClienteRepository : IClienteRepository
 
         await _context.SaveChangesAsync();
         return cliente;
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var cliente = await _context.Clientes.FindAsync(id);
+        if (cliente == null) return false;
+
+        _context.Clientes.Remove(cliente);
+        await _context.SaveChangesAsync();
+        return true;
     }
 
     public async Task<bool> DeleteAsync(int id, int userId)

@@ -20,6 +20,14 @@ public class ContratoRepository : IContratoRepository
         return await _context.Contratos.Include(c => c.Cliente).ToListAsync();
     }
 
+    public async Task<List<Contrato>> GetAllAsync(int userId)
+    {
+        return await _context.Contratos
+            .Where(c => c.UsuarioId == userId)
+            .Include(c => c.Cliente)
+            .ToListAsync();
+    }
+
     public async Task<List<Contrato>> GetByClienteIdAsync(int clienteId)
     {
         return await _context.Contratos.Where(c => c.ClienteId == clienteId).Include(c => c.Cliente).ToListAsync();
@@ -30,6 +38,14 @@ public class ContratoRepository : IContratoRepository
         return await _context.Contratos.Include(c => c.Cliente).FirstOrDefaultAsync(c => c.Id == id);
     }
 
+    public async Task<Contrato?> GetByIdAsync(int id, int userId)
+    {
+        return await _context.Contratos
+            .Where(c => c.Id == id && c.UsuarioId == userId)
+            .Include(c => c.Cliente)
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<Contrato> CreateAsync(CreateContratoDto dto)
     {
         var contrato = new Contrato
@@ -38,7 +54,8 @@ public class ContratoRepository : IContratoRepository
             PrecoMwh = dto.PrecoMwh,
             Fornecedor = dto.Fornecedor,
             DataInicio = dto.DataInicio,
-            DataFim = dto.DataFim
+            DataFim = dto.DataFim,
+            UsuarioId = dto.UsuarioId
         };
 
         _context.Contratos.Add(contrato);
@@ -66,6 +83,18 @@ public class ContratoRepository : IContratoRepository
     public async Task<bool> DeleteAsync(int id)
     {
         var contrato = await _context.Contratos.FindAsync(id);
+        if (contrato == null) return false;
+
+        _context.Contratos.Remove(contrato);
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<bool> DeleteAsync(int id, int userId)
+    {
+        var contrato = await _context.Contratos
+            .FirstOrDefaultAsync(c => c.Id == id && c.UsuarioId == userId);
         if (contrato == null) return false;
 
         _context.Contratos.Remove(contrato);

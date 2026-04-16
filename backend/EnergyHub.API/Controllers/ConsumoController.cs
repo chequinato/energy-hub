@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using EnergyHub.API.Services;
 using EnergyHub.API.DTOs;
+using System.Security.Claims;
 
 namespace EnergyHub.API.Controllers;
 
@@ -17,17 +18,29 @@ public class ConsumoController : ControllerBase
         _service = service;
     }
 
+    private int GetUserId()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+            throw new UnauthorizedAccessException("Token inválido");
+
+        return int.Parse(userIdClaim);
+    }
+
     [HttpGet]
     public async Task<ActionResult<List<ConsumoDto>>> GetAll()
     {
-        var consumos = await _service.GetAllAsync();
+        var userId = GetUserId();
+        var consumos = await _service.GetAllAsync(userId);
         return Ok(consumos);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<ConsumoDto>> GetById(int id)
     {
-        var consumo = await _service.GetByIdAsync(id);
+        var userId = GetUserId();
+        var consumo = await _service.GetByIdAsync(id, userId);
         if (consumo == null)
             return NotFound();
 
@@ -53,6 +66,8 @@ public class ConsumoController : ControllerBase
     {
         try
         {
+            var userId = GetUserId();
+            dto.UsuarioId = userId;
             var consumo = await _service.CreateAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = consumo.Id }, consumo);
         }
@@ -75,7 +90,8 @@ public class ConsumoController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(int id)
     {
-        var success = await _service.DeleteAsync(id);
+        var userId = GetUserId();
+        var success = await _service.DeleteAsync(id, userId);
         if (!success)
             return NotFound();
 

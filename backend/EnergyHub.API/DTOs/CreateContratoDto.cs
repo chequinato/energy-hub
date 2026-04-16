@@ -15,5 +15,7 @@ public class CreateContratoDto
     public DateOnly DataInicio { get; set; }
 
     public DateOnly DataFim { get; set; }
+
+    public int UsuarioId { get; set; }
 }
 

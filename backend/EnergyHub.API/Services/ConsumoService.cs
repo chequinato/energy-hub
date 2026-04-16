@@ -25,9 +25,35 @@ public class ConsumoService : IConsumoService
         }).ToList();
     }
 
+    public async Task<List<ConsumoDto>> GetAllAsync(int userId)
+    {
+        var consumos = await _repository.GetAllAsync(userId);
+        return consumos.Select(c => new ConsumoDto
+        {
+            Id = c.Id,
+            ClienteId = c.ClienteId,
+            Mes = c.Mes,
+            ConsumoMwh = c.ConsumoMwh
+        }).ToList();
+    }
+
     public async Task<ConsumoDto?> GetByIdAsync(int id)
     {
         var consumo = await _repository.GetByIdAsync(id);
+        if (consumo == null) return null;
+
+        return new ConsumoDto
+        {
+            Id = consumo.Id,
+            ClienteId = consumo.ClienteId,
+            Mes = consumo.Mes,
+            ConsumoMwh = consumo.ConsumoMwh
+        };
+    }
+
+    public async Task<ConsumoDto?> GetByIdAsync(int id, int userId)
+    {
+        var consumo = await _repository.GetByIdAsync(id, userId);
         if (consumo == null) return null;
 
         return new ConsumoDto
@@ -154,6 +180,11 @@ public class ConsumoService : IConsumoService
     public async Task<bool> DeleteAsync(int id)
     {
         return await _repository.DeleteAsync(id);
+    }
+
+    public async Task<bool> DeleteAsync(int id, int userId)
+    {
+        return await _repository.DeleteAsync(id, userId);
     }
 }
 

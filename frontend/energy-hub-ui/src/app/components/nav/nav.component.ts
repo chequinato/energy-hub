@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, computed, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-nav',
@@ -50,31 +51,52 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 
             <!-- Right side -->
             <div class="flex items-center gap-2 sm:gap-3">
-              <a
-                routerLink="/login"
-                class="hidden sm:inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500/90 to-blue-500/90 hover:from-cyan-400 hover:to-blue-400 text-white px-4 py-2 text-sm font-semibold shadow-[0_16px_40px_-30px_rgba(34,211,238,0.75)] transition-all duration-300 hover:shadow-[0_18px_50px_-30px_rgba(59,130,246,0.80)]"
-              >
-                Entrar
-              </a>
+              <!-- Show Login when not authenticated -->
+              @if (!isAuthenticated()) {
+                <a
+                  routerLink="/login"
+                  class="hidden sm:inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500/90 to-blue-500/90 hover:from-cyan-400 hover:to-blue-400 text-white px-4 py-2 text-sm font-semibold shadow-[0_16px_40px_-30px_rgba(34,211,238,0.75)] transition-all duration-300 hover:shadow-[0_18px_50px_-30px_rgba(59,130,246,0.80)]"
+                >
+                  Entrar
+                </a>
 
-              <div class="h-9 w-[1px] bg-slate-800/70 hidden sm:block"></div>
+                <!-- Mobile -->
+                <a
+                  routerLink="/login"
+                  class="sm:hidden inline-flex items-center justify-center rounded-xl border border-slate-800/80 bg-slate-900/40 px-3 py-2 text-sm font-semibold text-slate-100 hover:bg-slate-900/60 transition-all"
+                >
+                  Entrar
+                </a>
+              }
 
-              <!-- Avatar placeholder -->
-              <button
-                type="button"
-                class="group grid h-9 w-9 place-items-center rounded-xl border border-slate-800/80 bg-slate-900/40 hover:bg-slate-900/60 ring-1 ring-white/5 transition-all duration-300 hover:shadow-[0_18px_60px_-40px_rgba(148,163,184,0.25)]"
-                aria-label="Usuário"
-              >
-                <span class="text-sm font-semibold text-slate-200">MH</span>
-              </button>
+              <!-- Show Logout when authenticated -->
+              @if (isAuthenticated()) {
+                <div class="h-9 w-[1px] bg-slate-800/70 hidden sm:block"></div>
 
-              <!-- Mobile -->
-              <a
-                routerLink="/login"
-                class="sm:hidden inline-flex items-center justify-center rounded-xl border border-slate-800/80 bg-slate-900/40 px-3 py-2 text-sm font-semibold text-slate-100 hover:bg-slate-900/60 transition-all"
-              >
-                Entrar
-              </a>
+                <!-- Avatar placeholder -->
+                <button
+                  type="button"
+                  class="group grid h-9 w-9 place-items-center rounded-xl border border-slate-800/80 bg-slate-900/40 hover:bg-slate-900/60 ring-1 ring-white/5 transition-all duration-300 hover:shadow-[0_18px_60px_-40px_rgba(148,163,184,0.25)]"
+                  aria-label="Usuário"
+                >
+                  <span class="text-sm font-semibold text-slate-200">👤</span>
+                </button>
+
+                <button
+                  (click)="onLogout()"
+                  class="hidden sm:inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-red-500/90 to-orange-500/90 hover:from-red-400 hover:to-orange-400 text-white px-4 py-2 text-sm font-semibold shadow-[0_16px_40px_-30px_rgba(239,68,68,0.75)] transition-all duration-300 hover:shadow-[0_18px_50px_-30px_rgba(251,146,60,0.80)]"
+                >
+                  Sair
+                </button>
+
+                <!-- Mobile logout -->
+                <button
+                  (click)="onLogout()"
+                  class="sm:hidden inline-flex items-center justify-center rounded-xl border border-red-500/80 bg-red-900/40 px-3 py-2 text-sm font-semibold text-red-100 hover:bg-red-900/60 transition-all"
+                >
+                  Sair
+                </button>
+              }
             </div>
           </div>
         </div>
@@ -107,4 +129,14 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     }
   `]
 })
-export class NavComponent {}
+export class NavComponent {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  isAuthenticated = computed(() => this.authService.isAuthenticated());
+
+  onLogout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+}

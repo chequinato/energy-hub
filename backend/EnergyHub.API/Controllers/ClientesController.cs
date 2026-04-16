@@ -36,6 +36,14 @@ public class ClientesController : ControllerBase
         return Ok(clientes);
     }
 
+    [HttpGet("com-detalhes")]
+    public async Task<ActionResult<List<ClienteDetailDto>>> GetClientesComDetalhes()
+    {
+        var userId = GetUserId();
+        var clientes = await _clienteService.GetAllWithDetailsAsync(userId);
+        return Ok(clientes);
+    }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<ClienteDto>> GetCliente(int id)
     {

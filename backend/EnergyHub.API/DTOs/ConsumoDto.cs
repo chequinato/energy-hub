@@ -13,6 +13,7 @@ public class CreateConsumoDto
     public int ClienteId { get; set; }
     public string Mes { get; set; } = string.Empty;
     public decimal ConsumoMwh { get; set; }
+    public int UsuarioId { get; set; }
 }
 
 public class UpdateConsumoDto
