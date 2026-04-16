@@ -1,8 +1,9 @@
 
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -33,7 +34,7 @@ import { RouterLink } from '@angular/router';
             </div>
 
             <!-- Form -->
-            <form class="space-y-4">
+            <form class="space-y-4" (ngSubmit)="onLogin()">
               <div>
                 <label class="block text-sm font-semibold text-slate-300 mb-2">Email</label>
                 <input type="email" [(ngModel)]="email" required name="email" placeholder="seu@email.com"
@@ -44,10 +45,20 @@ import { RouterLink } from '@angular/router';
                 <input type="password" [(ngModel)]="password" required name="password" placeholder="••••••••"
                        class="w-full px-4 py-3 text-sm border border-slate-800/70 rounded-xl bg-slate-950/30 focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all text-slate-100 placeholder:text-slate-500 hover:border-slate-700/80">
               </div>
-              <button type="submit" class="w-full bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-400 hover:to-cyan-400 text-white font-semibold py-3 rounded-lg transition-all shadow-lg hover:shadow-xl shadow-sky-500/20 transform hover:scale-105 mt-6">
+              <button
+                type="submit"
+                [disabled]="loading"
+                class="w-full bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-400 hover:to-cyan-400 text-white font-semibold py-3 rounded-lg transition-all shadow-lg hover:shadow-xl shadow-sky-500/20 transform hover:scale-105 mt-6 disabled:opacity-60 disabled:cursor-not-allowed"
+              >
                 Entrar
               </button>
             </form>
+
+            @if (erroMsg) {
+              <div class="eh-card p-3 border-red-500/30 bg-red-500/5 mt-4">
+                <p class="text-sm text-red-200 font-semibold tracking-wide">{{ erroMsg }}</p>
+              </div>
+            }
 
             <!-- Footer -->
             <div class="text-center">
@@ -65,6 +76,31 @@ import { RouterLink } from '@angular/router';
 export class LoginPage {
   email = '';
   password = '';
+
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
+  loading = false;
+  erroMsg = '';
+
+  onLogin() {
+    if (this.loading) return;
+
+    this.loading = true;
+    this.erroMsg = '';
+
+    this.auth.login(this.email, this.password).subscribe({
+      next: () => {
+        this.loading = false;
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err: any) => {
+        console.error('Erro no login:', err);
+        this.loading = false;
+        this.erroMsg = err?.error?.message ?? 'Falha ao fazer login. Verifique email e senha.';
+      }
+    });
+  }
 }
 
 

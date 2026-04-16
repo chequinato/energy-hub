@@ -1,8 +1,9 @@
 
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -33,7 +34,7 @@ import { RouterLink } from '@angular/router';
             </div>
 
             <!-- Form -->
-            <form class="space-y-4">
+            <form class="space-y-4" (ngSubmit)="onRegister()">
               <div>
                 <label class="block text-sm font-semibold text-slate-300 mb-2">Nome Completo</label>
                 <input type="text" [(ngModel)]="nome" required name="nome" placeholder="Seu nome"
@@ -49,10 +50,20 @@ import { RouterLink } from '@angular/router';
                 <input type="password" [(ngModel)]="senha" required name="senha" minlength="6" placeholder="••••••••"
                        class="w-full px-4 py-3 text-sm border border-slate-800/70 rounded-xl bg-slate-950/30 focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all text-slate-100 placeholder:text-slate-500 hover:border-slate-700/80">
               </div>
-              <button type="submit" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-semibold py-3 rounded-lg transition-all shadow-lg hover:shadow-xl shadow-emerald-500/20 transform hover:scale-105 mt-6">
+              <button
+                type="submit"
+                [disabled]="loading"
+                class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-semibold py-3 rounded-lg transition-all shadow-lg hover:shadow-xl shadow-emerald-500/20 transform hover:scale-105 mt-6 disabled:opacity-60 disabled:cursor-not-allowed"
+              >
                 Criar Conta
               </button>
             </form>
+
+            @if (erroMsg) {
+              <div class="eh-card p-3 border-red-500/30 bg-red-500/5 mt-4">
+                <p class="text-sm text-red-200 font-semibold tracking-wide">{{ erroMsg }}</p>
+              </div>
+            }
 
             <!-- Footer -->
             <div class="text-center">
@@ -71,5 +82,30 @@ export class RegisterPage {
   nome = '';
   email = '';
   senha = '';
+
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
+  loading = false;
+  erroMsg = '';
+
+  onRegister() {
+    if (this.loading) return;
+
+    this.loading = true;
+    this.erroMsg = '';
+
+    this.auth.register(this.nome, this.email, this.senha).subscribe({
+      next: () => {
+        this.loading = false;
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err: any) => {
+        console.error('Erro no register:', err);
+        this.loading = false;
+        this.erroMsg = err?.error?.message ?? 'Falha ao criar conta. Tente novamente.';
+      }
+    });
+  }
 }
 

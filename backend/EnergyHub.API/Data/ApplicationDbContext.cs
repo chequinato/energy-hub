@@ -12,9 +12,32 @@ public class ApplicationDbContext : DbContext
     public DbSet<Cliente> Clientes { get; set; }
     public DbSet<Contrato> Contratos { get; set; }
     public DbSet<Consumo> Consumos { get; set; }
+    public DbSet<Usuario> Usuarios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Usuario (Auth)
+        modelBuilder.Entity<Usuario>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.Nome)
+                .HasMaxLength(200)
+                .IsRequired();
+
+            entity.Property(e => e.Email)
+                .HasMaxLength(200)
+                .IsRequired();
+
+            entity.Property(e => e.PasswordHash)
+                .IsRequired();
+
+            entity.Property(e => e.PasswordSalt)
+                .IsRequired();
+
+            entity.HasIndex(e => e.Email).IsUnique();
+        });
+
         // Cliente
         modelBuilder.Entity<Cliente>(entity =>
         {

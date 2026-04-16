@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using EnergyHub.API.Services;
 using EnergyHub.API.DTOs;
 
@@ -6,6 +7,7 @@ namespace EnergyHub.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class ConsumoController : ControllerBase
 {
     private readonly IConsumoService _service;
