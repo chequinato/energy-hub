@@ -15,7 +15,7 @@ import { Dashboard } from '../../models/dashboard.model';
         <!-- HEADER -->
         <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h1 class="text-display-md font-mono font-semibold tracking-[-0.03em] text-slate-50">Dashboard</h1>
+            <h1 class="text-display-md font-semibold tracking-[-0.03em] text-slate-50">Dashboard</h1>
             <p class="eh-muted mt-2 max-w-3xl">
               Visão geral com análise de consumo e economia (real vs estimado).
             </p>

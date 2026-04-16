@@ -9,7 +9,7 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   template: `
-    <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-slate-900 py-12 px-4 font-sans">
+    <div class="eh-app flex items-center justify-center py-12 px-4">
       <div class="max-w-md w-full">
         <div class="relative">
           <div class="pointer-events-none absolute -inset-6 rounded-[28px] bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-cyan-500/10 blur-2xl"></div>

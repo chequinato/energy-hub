@@ -13,7 +13,7 @@ import { Contrato } from '../../models/contrato.model';
       <!-- Header -->
       <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 class="text-display-md font-mono font-semibold tracking-[-0.03em] text-slate-50">Contratos</h1>
+          <h1 class="text-display-md font-semibold tracking-[-0.03em] text-slate-50">Contratos</h1>
           <p class="eh-muted mt-2">Gerenciamento de contratos de energia.</p>
         </div>
         <button

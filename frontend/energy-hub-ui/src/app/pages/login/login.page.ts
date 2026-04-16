@@ -9,7 +9,7 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   template: `
-    <div class="min-h-screen flex items-center justify-center py-12 px-4 font-sans">
+    <div class="min-h-screen flex items-center justify-center py-12 px-4">
       <div class="max-w-md w-full">
         <div class="relative">
           <div class="pointer-events-none absolute -inset-6 rounded-[28px] bg-gradient-to-r from-cyan-500/10 via-blue-500/5 to-emerald-500/10 blur-2xl"></div>
@@ -24,7 +24,7 @@ import { RouterLink } from '@angular/router';
 
             <!-- Title -->
             <div class="text-center space-y-2">
-              <h2 class="font-mono text-2xl font-semibold tracking-[-0.01em] text-slate-100">
+              <h2 class=" text-2xl font-semibold tracking-[-0.01em] text-slate-100">
                 Bem-vindo de volta
               </h2>
               <p class="text-sm text-slate-400 font-light">
