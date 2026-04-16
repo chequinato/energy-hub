@@ -24,5 +24,8 @@ public class Cliente
     // Navigation properties
     public List<Contrato> Contratos { get; set; } = new();
     public List<Consumo> Consumos { get; set; } = new();
+
+    public int UsuarioId { get; set; } // 👈 ESSENCIAL
+    public Usuario Usuario { get; set; }
 }
 

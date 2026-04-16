@@ -18,5 +18,8 @@ public class Consumo
     // Navigation property
     [ForeignKey("ClienteId")]
     public Cliente Cliente { get; set; } = null!;
+
+    public int UsuarioId { get; set; } // 👈 ESSENCIAL
+    public Usuario Usuario { get; set; }
 }
 

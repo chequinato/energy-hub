@@ -15,7 +15,7 @@ public class ClienteRepository : IClienteRepository
         _context = context;
     }
 
-public async Task<List<Cliente>> GetAllAsync()
+public async Task<List<Cliente>> GetAllAsync(int userId)
 {
     return await _context.Clientes
         .Include(c => c.Contratos)

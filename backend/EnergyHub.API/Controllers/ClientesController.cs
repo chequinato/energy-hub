@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using EnergyHub.API.DTOs;
 using EnergyHub.API.Services;
+using System.Security.Claims;
 
 namespace EnergyHub.API.Controllers;
 
@@ -20,7 +21,9 @@ public class ClientesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<ClienteDto>>> GetClientes()
     {
-        var clientes = await _clienteService.GetAllAsync();
+
+        var userId = GetUserId();
+        var clientes = await _clienteService.GetAllAsync(userId);
         return Ok(clientes);
     }
 
@@ -113,5 +116,15 @@ public class ClientesController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
+    private int GetUserId()
+{
+    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+    if (string.IsNullOrEmpty(userIdClaim))
+        throw new UnauthorizedAccessException("Token inválido");
+
+    return int.Parse(userIdClaim);
+}
 }
 
