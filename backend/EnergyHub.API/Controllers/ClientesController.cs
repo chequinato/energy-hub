@@ -18,113 +18,66 @@ public class ClientesController : ControllerBase
         _clienteService = clienteService;
     }
 
+    private int GetUserId()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+            throw new UnauthorizedAccessException("Token inválido");
+
+        return int.Parse(userIdClaim);
+    }
+
     [HttpGet]
     public async Task<ActionResult<List<ClienteDto>>> GetClientes()
     {
-
         var userId = GetUserId();
         var clientes = await _clienteService.GetAllAsync(userId);
-        return Ok(clientes);
-    }
-
-    [HttpGet("com-detalhes")]
-    public async Task<ActionResult<List<ClienteDetailDto>>> GetClientesWithDetails()
-    {
-        var clientes = await _clienteService.GetAllWithDetailsAsync();
         return Ok(clientes);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<ClienteDto>> GetCliente(int id)
     {
-        var cliente = await _clienteService.GetByIdAsync(id);
-        if (cliente == null)
-        {
-            return NotFound();
-        }
-        return Ok(cliente);
-    }
+        var userId = GetUserId();
+        var cliente = await _clienteService.GetByIdAsync(id, userId);
 
-    [HttpGet("{id}/detalhes")]
-    public async Task<ActionResult<ClienteDetailDto>> GetClienteWithDetails(int id)
-    {
-        var cliente = await _clienteService.GetByIdWithDetailsAsync(id);
         if (cliente == null)
-        {
             return NotFound();
-        }
+
         return Ok(cliente);
     }
 
     [HttpPost]
     public async Task<ActionResult<ClienteDto>> CreateCliente(CreateClienteDto dto)
     {
-        var cliente = await _clienteService.CreateAsync(dto);
+        var userId = GetUserId();
+        var cliente = await _clienteService.CreateAsync(dto, userId);
+
         return CreatedAtAction(nameof(GetCliente), new { id = cliente.Id }, cliente);
     }
 
     [HttpPut("{id}")]
     public async Task<ActionResult<ClienteDto>> UpdateCliente(int id, UpdateClienteDto dto)
     {
-        var cliente = await _clienteService.UpdateAsync(id, dto);
+        var userId = GetUserId();
+        var cliente = await _clienteService.UpdateAsync(id, dto, userId);
+
         if (cliente == null)
-        {
             return NotFound();
-        }
+
         return Ok(cliente);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCliente(int id)
     {
-        var success = await _clienteService.DeleteAsync(id);
+        var userId = GetUserId();
+        var success = await _clienteService.DeleteAsync(id, userId);
+
         if (!success)
-        {
             return NotFound();
-        }
+
         return NoContent();
     }
-
-    [HttpGet("{clienteId}/economia")]
-    public async Task<ActionResult<EconomiaSimulacaoDto>> CalcularEconomiaComContrato(
-        int clienteId,
-        [FromQuery] decimal precoAtual)
-    {
-        try
-        {
-            var economia = await _clienteService.SimularEconomiaComContratoAsync(clienteId, precoAtual);
-            return Ok(economia);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
-
-    [HttpPost("{clienteId}/simular-economia")]
-    public async Task<ActionResult<EconomiaSimulacaoDto>> SimularEconomiaComContrato(
-        int clienteId,
-        [FromQuery] decimal precoMercadoAtualMwh)
-    {
-        try
-        {
-            var economia = await _clienteService.SimularEconomiaComContratoAsync(clienteId, precoMercadoAtualMwh);
-            return Ok(economia);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
-
-    private int GetUserId()
-{
-    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-    if (string.IsNullOrEmpty(userIdClaim))
-        throw new UnauthorizedAccessException("Token inválido");
-
-    return int.Parse(userIdClaim);
 }
-}
-
