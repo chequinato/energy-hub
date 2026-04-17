@@ -1,8 +1,10 @@
 export interface EconomiaSimulacao {
   clienteId: number;
-  consumoMwh: number;
+  nomeCliente: string;
+  consumoMedioMensal: number;
   precoAtualMwh: number;
-  economiaPercentual?: number;
-  economiaValor?: number;
+  precoContratoMwh: number;
+  economiaMensal: number;
+  economiaAnual: number;
+  possuiContratoAtivo: boolean;
 }
-

@@ -142,39 +142,40 @@ public class ClienteService : IClienteService
         return (precoReferencia - contrato.PrecoMwh) * c.ConsumoMedio;
     }
 
-    public async Task<EconomiaSimulacaoDto> CalcularEconomiaAsync(int clienteId, decimal precoAtualMwh)
+    public async Task<EconomiaSimulacaoDto> CalcularEconomiaAsync(int clienteId, int userId, decimal precoAtualMwh)
+{
+    var cliente = await _repository.GetByIdAsync(clienteId, userId);
+
+    if (cliente == null)
+        throw new ArgumentException("Cliente não encontrado para este usuário");
+
+    var hoje = DateOnly.FromDateTime(DateTime.UtcNow);
+    var contratoAtivo = cliente.Contratos?
+        .FirstOrDefault(x =>
+            x.DataFim >= hoje &&
+            x.DataInicio <= hoje);
+
+    decimal economiaMensal = 0;
+    decimal economiaAnual = 0;
+
+    if (contratoAtivo != null)
     {
-        var cliente = await _repository.GetByIdAsync(clienteId);
-        if (cliente == null)
-            throw new ArgumentException($"Cliente com ID {clienteId} não encontrado");
-
-        var hoje = DateOnly.FromDateTime(DateTime.UtcNow);
-        var contratoAtivo = cliente.Contratos?
-            .FirstOrDefault(x =>
-                x.DataFim >= hoje &&
-                x.DataInicio <= hoje);
-
-        decimal economiaMensal = 0;
-        decimal economiaAnual = 0;
-
-        if (contratoAtivo != null)
-        {
-            economiaMensal = (precoAtualMwh - contratoAtivo.PrecoMwh) * cliente.ConsumoMedio;
-            economiaAnual = economiaMensal * 12;
-        }
-
-        return new EconomiaSimulacaoDto
-        {
-            ClienteId = clienteId,
-            NomeCliente = cliente.Nome,
-            ConsumoMedioMensal = cliente.ConsumoMedio,
-            PrecoAtualMwh = precoAtualMwh,
-            PrecoContratoMwh = contratoAtivo?.PrecoMwh ?? 0,
-            EconomiaMensal = Math.Round(economiaMensal, 2),
-            EconomiaAnual = Math.Round(economiaAnual, 2),
-            PossuiContratoAtivo = contratoAtivo != null
-        };
+        economiaMensal = (precoAtualMwh - contratoAtivo.PrecoMwh) * cliente.ConsumoMedio;
+        economiaAnual = economiaMensal * 12;
     }
 
-    
+    return new EconomiaSimulacaoDto
+    {
+        ClienteId = clienteId,
+        NomeCliente = cliente.Nome,
+        ConsumoMedioMensal = cliente.ConsumoMedio,
+        PrecoAtualMwh = precoAtualMwh,
+        PrecoContratoMwh = contratoAtivo?.PrecoMwh ?? 0,
+        EconomiaMensal = Math.Round(economiaMensal, 2),
+        EconomiaAnual = Math.Round(economiaAnual, 2),
+        PossuiContratoAtivo = contratoAtivo != null
+    };
+}
+
+
 }

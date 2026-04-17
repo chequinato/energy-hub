@@ -18,5 +18,5 @@ public interface IClienteService
     Task<ClienteDto?> UpdateAsync(int id, UpdateClienteDto dto, int userId);
     Task<bool> DeleteAsync(int id);
     Task<bool> DeleteAsync(int id, int userId);
-    Task<EconomiaSimulacaoDto> CalcularEconomiaAsync(int clienteId, decimal precoAtualMwh);
+    Task<EconomiaSimulacaoDto> CalcularEconomiaAsync(int clienteId, int userId, decimal precoAtualMwh);
 }

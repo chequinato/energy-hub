@@ -89,5 +89,24 @@ public class ClientesController : ControllerBase
         return NoContent();
     }
 
+    [HttpGet("simular-economia")]
+public async Task<ActionResult<EconomiaSimulacaoDto>> SimularEconomia(
+    [FromQuery] int clienteId,
+    [FromQuery] decimal precoAtualMwh)
+{
+    try
+    {
+        var userId = GetUserId();
+
+        var result = await _clienteService.CalcularEconomiaAsync(clienteId, userId, precoAtualMwh);
+
+        return Ok(result);
+    }
+    catch (ArgumentException ex)
+    {
+        return BadRequest(ex.Message);
+    }
+}
+
     
 }

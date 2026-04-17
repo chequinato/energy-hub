@@ -176,8 +176,8 @@ import { Dashboard } from '../../models/dashboard.model';
                 <div class="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-5 ring-1 ring-emerald-400/10">
                   <p class="text-xs uppercase tracking-[0.16em] font-semibold text-emerald-200/80">Resultado</p>
                   <div class="mt-3 flex items-end justify-between gap-4">
-                    <p class="text-3xl font-semibold text-emerald-200">{{ resultado()?.economiaPercentual | number:'1.1-1' }}%</p>
-                    <p class="text-sm text-emerald-200/80 font-semibold">R$ {{ resultado()?.economiaValor | number:'1.2-2' }}/mês</p>
+                    <p class="text-3xl font-semibold text-emerald-200">R$ {{ resultado()?.economiaMensal | number:'1.2-2' }}</p>
+                    <p class="text-sm text-emerald-200/80 font-semibold">R$ {{ resultado()?.economiaAnual | number:'1.2-2' }}/ano</p>
                   </div>
                 </div>
               }
