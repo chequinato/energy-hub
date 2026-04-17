@@ -20,7 +20,7 @@ import { AuthService } from '../../services/auth.service';
                 ⚡
               </span>
               <div class="leading-tight">
-                <div class="text-[13px] uppercase tracking-[0.20em] text-slate-400 font-semibold">EnergyHub - TESTE</div>
+                <div class="text-[13px] uppercase tracking-[0.20em] text-slate-400 font-semibold">EnergyHub</div>
                 <div class="text-sm text-slate-200 font-semibold tracking-wide">Gestão inteligente</div>
               </div>
             </a>
