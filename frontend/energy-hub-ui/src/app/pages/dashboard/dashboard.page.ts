@@ -156,7 +156,7 @@ import { Dashboard } from '../../models/dashboard.model';
                 <label class="block text-xs text-slate-300 mb-2 font-semibold tracking-wide">Cliente</label>
                 <select #clienteSelect class="w-full px-4 py-2.5 bg-slate-950/40 border border-slate-800/70 rounded-xl text-slate-100 text-sm focus:ring-2 focus:ring-emerald-400 focus:border-transparent placeholder:text-slate-500" (change)="onClienteChange(clienteSelect.value)">
                   <option value="">Selecione um cliente</option>
-                  @for (cliente of clientesComContratoAtivo; track cliente.id) {
+                  @for (cliente of clientesComContratoAtivo(); track cliente.id) {
                     <option [value]="cliente.id">{{ cliente.nome }}</option>
                   }
                 </select>
@@ -215,8 +215,8 @@ import { Dashboard } from '../../models/dashboard.model';
                 }
               </div>
             } @else {
-              <ul class="space-y-3" *ngIf="ultimosClientes.length; else semClientes">
-                <li *ngFor="let c of ultimosClientes; trackBy: trackById" class="rounded-2xl border border-slate-800/70 bg-slate-950/20 p-4 ring-1 ring-white/5 hover:bg-slate-950/30 hover:border-slate-700/80 transition-all duration-300 hover:shadow-[0_18px_60px_-45px_rgba(34,211,238,0.18)] hover:-translate-y-0.5">
+              <ul class="space-y-3" *ngIf="ultimosClientes().length; else semClientes">
+                <li *ngFor="let c of ultimosClientes(); trackBy: trackById" class="rounded-2xl border border-slate-800/70 bg-slate-950/20 p-4 ring-1 ring-white/5 hover:bg-slate-950/30 hover:border-slate-700/80 transition-all duration-300 hover:shadow-[0_18px_60px_-45px_rgba(34,211,238,0.18)] hover:-translate-y-0.5">
                   <div class="flex items-center justify-between">
                     <div>
                       <p class="text-slate-50 font-semibold tracking-wide">{{ c.nome }}</p>
@@ -328,7 +328,7 @@ export class DashboardPage {
 
   dashboard = signal<Dashboard | null>(null);
   clientes = signal<ClienteDetail[]>([]);
-  clientesComContratoAtivo: ClienteDetail[] = [];
+  clientesComContratoAtivo = signal<ClienteDetail[]>([]);
   carregandoClientes = signal(true);
   carregandoDashboard = signal(true);
   selectedClienteId = signal<number | null>(null);
@@ -336,7 +336,7 @@ export class DashboardPage {
   resultado = signal<EconomiaSimulacao | null>(null);
   erroMessage = signal<string>('');
   erroDashboard = signal<string>('');
-  ultimosClientes: ClienteDetail[] = [];
+  ultimosClientes = signal<ClienteDetail[]>([]);
 
   constructor() {
     this.loadDashboard();
@@ -370,42 +370,81 @@ export class DashboardPage {
   }
 
   loadClientes() {
-    this.carregandoClientes.set(true);
-    this.apiService.getClientesWithDetails().subscribe({
-      next: (data: ClienteDetail[]) => {
-        const sorted = data.sort((a, b) => b.id - a.id);
-        this.clientes.set(sorted);
-        this.ultimosClientes = sorted
-          .filter(c => c && c.id) // 🔥 proteção
-          .slice(0, 5);
-        this.clientesComContratoAtivo = sorted.filter(c => c.contratoAtivo != null);
-        this.carregandoClientes.set(false);
-      },
-      error: (err: any) => {
-        console.error('Erro ao carregar clientes:', err);
-        this.carregandoClientes.set(false);
-      }
-    });
-  }
+  this.carregandoClientes.set(true);
+
+  this.apiService.getClientesWithDetails().subscribe({
+    next: (data: ClienteDetail[]) => {
+      // Sempre cria um NOVO array (importante para signals!)
+      const sorted = [...data].sort((a, b) => b.id - a.id);
+
+      this.clientes.set(sorted);
+      this.ultimosClientes.set(sorted.filter(c => c?.id).slice(0, 5));
+
+      // FILTRO CORRIGIDO - usa statusContrato como principal
+      const clientesAtivos = sorted.filter(c => {
+        const status = (c.statusContrato || '').toLowerCase().trim();
+        return status === 'ativo' || 
+               status === 'active' || 
+               status === 'em vigor' ||
+               c.contratoAtivo != null;   // fallback
+      });
+
+      this.clientesComContratoAtivo.set(clientesAtivos);
+
+      // DEBUG - abra o console (F12) e veja isso
+      console.log('🔥 Total de clientes recebidos:', sorted.length);
+      console.log('🔥 Clientes com contrato ativo (após filtro):', clientesAtivos.length);
+      console.log('🔥 Exemplo do primeiro cliente:', sorted[0]);
+      console.log('🔥 Status dos clientes:', sorted.map(c => ({ nome: c.nome, status: c.statusContrato })));
+
+      this.carregandoClientes.set(false);
+    },
+    error: (err: any) => {
+      console.error('Erro ao carregar clientes:', err);
+      this.carregandoClientes.set(false);
+    }
+  });
+}
 
   onClienteChange(value: string) {
     this.selectedClienteId.set(parseInt(value) || null);
   }
 
   calcular() {
-    const id = this.selectedClienteId();
-    const preco = parseFloat(this.precoAtual);
-    if (id && !isNaN(preco) && preco > 0) {
-      this.erroMessage.set('');
-      this.apiService.calcularEconomia(id, preco).subscribe({
-        next: (data: EconomiaSimulacao) => this.resultado.set(data),
-        error: (err: any) => {
-          console.error('Erro simulação:', err);
-          this.erroMessage.set('Erro ao calcular. Verifique dados do cliente.');
-        }
-      });
-    } else {
-      this.erroMessage.set('Selecione cliente e preço válido.');
-    }
+  const id = this.selectedClienteId();
+  const preco = parseFloat(this.precoAtual);   // ← mais seguro
+
+  console.log(`🔍 Tentando calcular → Cliente ID: ${id} | Preço digitado: "${this.precoAtual}" → convertido: ${preco}`);
+
+  if (!id) {
+    this.erroMessage.set('❌ Selecione um cliente.');
+    return;
   }
+
+  if (isNaN(preco) || preco <= 0) {
+    this.erroMessage.set('❌ Informe um preço válido maior que zero (R$/MWh).');
+    return;
+  }
+
+  this.erroMessage.set('');
+  this.resultado.set(null);
+
+  this.apiService.calcularEconomia(id, preco).subscribe({
+    next: (data: EconomiaSimulacao) => {
+      console.log('✅ Simulação retornada com sucesso:', data);
+      this.resultado.set(data);
+    },
+    error: (err: any) => {
+      console.error('❌ Erro na chamada da API:', err);
+
+      if (err.status === 404) {
+        this.erroMessage.set('❌ Endpoint não encontrado. Verifique a rota no backend (/api/clientes/simular-economia)');
+      } else if (err.status === 400) {
+        this.erroMessage.set('❌ Dados inválidos enviados para o backend.');
+      } else {
+        this.erroMessage.set(`❌ Erro ao calcular economia (${err.status || 'desconhecido'}). Veja o console.`);
+      }
+    }
+  });
+}
 }

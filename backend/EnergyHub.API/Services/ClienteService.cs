@@ -175,4 +175,6 @@ public class ClienteService : IClienteService
             PossuiContratoAtivo = contratoAtivo != null
         };
     }
+
+    
 }

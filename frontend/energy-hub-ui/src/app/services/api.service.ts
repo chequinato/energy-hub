@@ -62,9 +62,8 @@ export class ApiService {
   }
 
   calcularEconomia(clienteId: number, precoAtualMwh: number): Observable<EconomiaSimulacao> {
-    return this.http.post<EconomiaSimulacao>(
-      `${this.baseUrl}/clientes/${clienteId}/simular-economia?precoMercadoAtualMwh=${precoAtualMwh}`,
-      {}
+    return this.http.get<EconomiaSimulacao>(
+      `${this.baseUrl}/clientes/simular-economia?clienteId=${clienteId}&precoAtualMwh=${precoAtualMwh}`
     );
   }
 
