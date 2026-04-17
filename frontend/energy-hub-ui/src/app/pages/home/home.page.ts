@@ -7,14 +7,14 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterLink],
   template: `
-    <div class="min-h-screen bg-[#06131a] text-slate-100 selection:bg-cyan-400/20 selection:text-cyan-100">
+    <div class="">
 
       <!-- HERO -->
       <section class="relative overflow-hidden">
         <div class="absolute inset-0 pointer-events-none">
           <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.16),_transparent_32%),radial-gradient(circle_at_85%_20%,_rgba(16,185,129,0.12),_transparent_24%),linear-gradient(180deg,_rgba(6,19,26,0.96),_rgba(6,19,26,1)_70%)"></div>
-          <div class="absolute top-24 left-[-120px] h-72 w-72 rounded-full bg-cyan-400/10 blur-3xl"></div>
-          <div class="absolute bottom-0 right-[-100px] h-80 w-80 rounded-full bg-emerald-400/10 blur-3xl"></div>
+          <div class="absolute top-24 left-[-120px] h-72 w-72 rounded-full bg-cyan-400/5 blur-3xl"></div>
+          <div class="absolute bottom-0 right-[-100px] h-80 w-80 rounded-full bg-emerald-400/5 blur-3xl"></div>
         </div>
 
         <div class="relative mx-auto grid max-w-7xl gap-14 px-6 pb-24 pt-24 md:px-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:pt-28">
@@ -22,7 +22,7 @@ import { RouterLink } from '@angular/router';
           <!-- TEXTO -->
           <div class="space-y-8">
 
-            <div class="inline-flex items-center gap-3 rounded-full border border-cyan-400/20 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.24em] text-cyan-200 backdrop-blur-sm">
+            <div class="inline-flex items-center gap-3 rounded-full border border-cyan-400/20 bg-transparent px-4 py-2 text-xs uppercase tracking-[0.24em] text-cyan-200 backdrop-blur-sm">
               <span class="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_16px_rgba(52,211,153,0.8)]"></span>
               Inteligência para gestão de energia
             </div>
@@ -219,7 +219,7 @@ import { RouterLink } from '@angular/router';
 
         <div class="mx-auto max-w-5xl px-6 md:px-10">
 
-          <div class="rounded-[2rem] border border-white/10 bg-white/5 px-8 py-12 text-center shadow-xl shadow-black/20 backdrop-blur-xl md:px-14">
+          <div class="rounded-[2rem] border border-white/10 bg-transparent border border-white/10 px-8 py-12 text-center shadow-xl shadow-black/20 backdrop-blur-xl md:px-14">
 
             <p class="text-sm uppercase tracking-[0.3em] text-cyan-300">
               Pronto para começar?
