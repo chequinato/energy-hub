@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 
@@ -7,7 +7,7 @@ export interface AuthResponseDto {
   userId: number;
   nome: string;
   email: string;
-  expiresAt: string; // ISO string vindo do backend
+  expiresAt: string;
 }
 
 @Injectable({
@@ -19,6 +19,10 @@ export class AuthService {
   private readonly baseUrl = 'http://localhost:5243/api';
   private readonly tokenKey = 'energyhub_token';
 
+  // 👇 AGORA É REATIVO
+  private _isAuthenticated = signal(this.hasValidToken());
+  isAuthenticated = this._isAuthenticated.asReadonly();
+
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
@@ -29,6 +33,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem(this.tokenKey);
+    this._isAuthenticated.set(false); // 👈 atualiza na hora
   }
 
   private extractToken(res: any): string | null {
@@ -36,14 +41,14 @@ export class AuthService {
     return typeof token === 'string' && token.length > 0 ? token : null;
   }
 
-  isAuthenticated(): boolean {
+  // 👇 função interna que valida o token
+  private hasValidToken(): boolean {
     const token = this.getToken();
     if (!token) return false;
 
     const exp = this.getTokenExp(token);
     if (!exp) return false;
 
-    // exp é em segundos desde epoch
     return exp > Math.floor(Date.now() / 1000);
   }
 
@@ -52,12 +57,14 @@ export class AuthService {
       const payload = token.split('.')[1];
       const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
       const padded = base64 + '='.repeat((4 - (base64.length % 4)) % 4);
+
       const json = decodeURIComponent(
         atob(padded)
           .split('')
           .map((c) => `%${c.charCodeAt(0).toString(16).padStart(2, '0')}`)
           .join('')
       );
+
       const parsed = JSON.parse(json) as { exp?: number };
       return typeof parsed.exp === 'number' ? parsed.exp : null;
     } catch {
@@ -71,7 +78,10 @@ export class AuthService {
       .pipe(
         tap((res) => {
           const token = this.extractToken(res);
-          if (token) this.setToken(token);
+          if (token) {
+            this.setToken(token);
+            this._isAuthenticated.set(true); // 👈 atualiza na hora
+          }
         })
       );
   }
@@ -82,9 +92,11 @@ export class AuthService {
       .pipe(
         tap((res) => {
           const token = this.extractToken(res);
-          if (token) this.setToken(token);
+          if (token) {
+            this.setToken(token);
+            this._isAuthenticated.set(true); // 👈 atualiza na hora
+          }
         })
       );
   }
 }
-

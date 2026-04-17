@@ -133,7 +133,7 @@ export class NavComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  isAuthenticated = computed(() => this.authService.isAuthenticated());
+  isAuthenticated = this.authService.isAuthenticated;
 
   onLogout() {
     this.authService.logout();
