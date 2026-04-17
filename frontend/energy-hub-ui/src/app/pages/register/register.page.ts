@@ -13,8 +13,8 @@ import { AuthService } from '../../services/auth.service';
     <div class="eh-app flex items-center justify-center py-12 px-4">
       <div class="max-w-md w-full">
         <div class="relative">
-          <div class="pointer-events-none absolute -inset-6 rounded-[28px] bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-cyan-500/10 blur-2xl"></div>
-          <div class="relative bg-gradient-to-br from-slate-900/45 to-slate-950/30 border border-slate-800/70 rounded-[28px] shadow-[0_30px_120px_-80px_rgba(16,185,129,0.35)] overflow-hidden ring-1 ring-white/5 backdrop-blur-xl hover:border-slate-700/80 transition-all">
+          <div class=""></div>
+          <div class="relative bg-slate-950/60 border border-slate-800/70 rounded-[28px] shadow-[0_30px_120px_-80px_rgba(16,185,129,0.35)] overflow-hidden ring-1 ring-white/5  hover:border-slate-700/80 transition-all">
           <div class="p-8 space-y-6">
             <!-- Icon Header -->
             <div class="flex items-center justify-center">
