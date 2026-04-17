@@ -13,8 +13,8 @@ import { RouterLink } from '@angular/router';
       <section class="relative overflow-hidden">
         <div class="absolute inset-0 pointer-events-none">
           <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.16),_transparent_32%),radial-gradient(circle_at_85%_20%,_rgba(16,185,129,0.12),_transparent_24%),linear-gradient(180deg,_rgba(6,19,26,0.96),_rgba(6,19,26,1)_70%)"></div>
-          <div class="absolute top-24 left-[-120px] h-72 w-72 rounded-full bg-cyan-400/5 blur-3xl"></div>
-          <div class="absolute bottom-0 right-[-100px] h-80 w-80 rounded-full bg-emerald-400/5 blur-3xl"></div>
+          <div class=" h-72 w-72 rounded-full"></div>
+          <div class=" h-80 w-80 rounded-full"></div>
         </div>
 
         <div class="relative mx-auto grid max-w-7xl gap-14 px-6 pb-24 pt-24 md:px-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:pt-28">
@@ -95,7 +95,7 @@ import { RouterLink } from '@angular/router';
           <!-- DASHBOARD MOCK -->
           <div class="relative">
 
-            <div class="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-cyan-400/20 via-transparent to-emerald-400/10 blur-2xl"></div>
+            <div class="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-cyan-400/10 via-transparent to-transparent blur-2xl"></div>
 
             <div class="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/6 p-6 shadow-2xl shadow-black/30 backdrop-blur-xl">
 
