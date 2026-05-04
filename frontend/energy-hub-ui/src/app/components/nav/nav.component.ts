@@ -74,13 +74,13 @@ import { AuthService } from '../../services/auth.service';
                 <div class="h-9 w-[1px] bg-slate-800/70 hidden sm:block"></div>
 
                 <!-- Avatar placeholder -->
-                <button
-                  type="button"
+                <a
+                  routerLink="/perfil"
                   class="group grid h-9 w-9 place-items-center rounded-xl border border-slate-800/80 bg-slate-900/40 hover:bg-slate-900/60 ring-1 ring-white/5 transition-all duration-300 hover:shadow-[0_18px_60px_-40px_rgba(148,163,184,0.25)]"
-                  aria-label="Usuário"
+                  aria-label="Perfil do Usuário"
                 >
                   <span class="text-sm font-semibold text-slate-200">👤</span>
-                </button>
+                </a>
 
                 <button
                   (click)="onLogout()"
