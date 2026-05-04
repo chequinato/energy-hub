@@ -7,6 +7,7 @@ import { Consumo, CreateConsumo, UpdateConsumo, ConsumoMedio } from '../models/c
 import { EconomiaSimulacao } from '../models/economia.model';
 import { ClienteDetail } from '../models/cliente-detail.model';
 import { Dashboard } from '../models/dashboard.model';
+import { Usuario } from '../models/usuario.model';
 
 @Injectable({
   providedIn: 'root'
@@ -98,6 +99,11 @@ export class ApiService {
 
   deleteConsumo(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/consumo/${id}`);
+  }
+
+  // Usuários
+  getUsuarioPerfil(): Observable<Usuario> {
+    return this.http.get<Usuario>(`${this.baseUrl}/usuarios/perfil`);
   }
 }
 

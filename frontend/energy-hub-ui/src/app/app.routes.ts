@@ -12,6 +12,7 @@ export const routes: Routes = [
   { path: 'contratos', canActivate: [AuthGuard], loadComponent: () => import('./pages/contratos/contratos.page').then(m => m.ContratosPage) },
   { path: 'contratos/novo', canActivate: [AuthGuard], loadComponent: () => import('./pages/contrato-form/contrato-form.page').then(m => m.ContratoFormPage) },
   { path: 'consumos', canActivate: [AuthGuard], loadComponent: () => import('./pages/consumos/consumos.page').then(m => m.ConsumoPage) },
+  { path: 'perfil', canActivate: [AuthGuard], loadComponent: () => import('./pages/perfil/perfil.page').then(m => m.PerfilPage) },
   { path: 'login', loadComponent: () => import('./pages/login/login.page').then(m => m.LoginPage) },
   { path: 'register', loadComponent: () => import('./pages/register/register.page').then(m => m.RegisterPage) },
   { path: 'home', loadComponent: () => import('./pages/home/home.page').then(m => m.HomePage) },

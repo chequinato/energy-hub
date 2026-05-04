@@ -57,6 +57,7 @@ builder.Services.AddScoped<IContratoService, ContratoService>();
 builder.Services.AddScoped<IConsumoRepository, ConsumoRepository>();
 builder.Services.AddScoped<IConsumoService, ConsumoService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<UsuarioService>();
 
 // CORS for Angular (localhost:4200)
 builder.Services.AddCors(options =>
